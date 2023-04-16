@@ -1,14 +1,21 @@
---- 
+---
 # TinyTapeout project information
 project:
   wokwi_id:    0        # If using wokwi, set this to your project's ID
 
-# If using an HDL, set wokwi_id as 0 and uncomment and list your source files here. 
+# If using an HDL, set wokwi_id as 0 and uncomment and list your source files here.
 # Source files must be in ./src and you must list each source file separately
-#  source_files:        
-#    - counter.v
-#    - decoder.v
-#  top_module:  "seven_segment_seconds"      # put the name of your top module here, make it unique by prepending your github username
+  source_files:
+    - wrapper.v
+    - abro_state_machine.v
+    - binary_to_bcd.v
+    - dice_roller.v
+    - lfsr.v
+    - sequence_detector.v
+    - sequence_generator.v
+    - shift_register.v
+    - traffic_light.v
+  top_module:  "jblocklove_cgpt_benchmark_wrapper"      # put the name of your top module here, make it unique by prepending your github username
 
 # Keep a track of the submission yaml
 yaml_version: 3.0
@@ -17,11 +24,11 @@ yaml_version: 3.0
 # it does and how to operate it. This info will be automatically collected and used to make a datasheet for the chip.
 #
 # Here is a great example: https://github.com/davidsiaw/tt02-davidsiaw-stackcalc/blob/38c5647f83aad2aec675d566aa3d67b98f0aac81/info.yaml
-documentation: 
-  author:       ""      # Your name
-  title:        ""      # Project title
-  language:     "Wokwi" # other examples include Verilog, Amaranth, VHDL, etc
-  description:  ""      # Short description of what your project does
+documentation:
+  author:       "Jason Blocklove"      # Your name
+  title:        "ChatGPT-created Benchmarks"      # Project title
+  language:     "Verilog" # other examples include Verilog, Amaranth, VHDL, etc
+  description:  "This project implements 8 different benchmark circuits created 100% with ChatGPT-4."      # Short description of what your project does
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
@@ -32,7 +39,7 @@ documentation:
       Explain how to test your project
 
 # A description of what the inputs do
-  inputs:               
+  inputs:
     - clock
     - reset
     - none

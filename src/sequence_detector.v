@@ -5,17 +5,17 @@ module sequence_detector (
     output reg sequence_found
 );
 
-    reg [2:0] state, next_state;
+    reg [3:0] state, next_state;
 
     // State encoding
-    localparam S0 = 3'b000,
-               S1 = 3'b001,
-               S2 = 3'b010,
-               S3 = 3'b011,
-               S4 = 3'b100,
-               S5 = 3'b101,
-               S6 = 3'b110,
-               S7 = 3'b111;
+    localparam S0 = 4'b0000,
+               S1 = 4'b0001,
+               S2 = 4'b0010,
+               S3 = 4'b0011,
+               S4 = 4'b0100,
+               S5 = 4'b0101,
+               S6 = 4'b0110,
+               S7 = 4'b0111;
 
     // Next state logic
     always @(*) begin
@@ -42,7 +42,7 @@ module sequence_detector (
             sequence_found <= 1'b0;
         end else begin
             state <= next_state;
-            sequence_found <= (state == S6 && data == 3'b011) || (state == S7 && data == 3'b101);
+            sequence_found <= (state == S6 && data == 3'b011) || (state == S7 && data == 3'b101 && next_state == S2);
         end
     end
 

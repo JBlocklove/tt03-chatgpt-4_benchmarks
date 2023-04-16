@@ -43,18 +43,20 @@ initial begin
     // Reset the state machine
     #CLK_PERIOD reset_n = 1;
 
-	// Test cases
+    // Test cases
     // Format: {A, B, expected_O, expected_state}
     test_cases[0] = 8'h01; // Test case 0: {A:0, B:0, O:0, state:IDLE}
     test_cases[1] = 8'h82; // Test case 1: {A:1, B:0, O:0, state:STATE_A}
     test_cases[2] = 8'h44; // Test case 2: {A:0, B:1, O:0, state:STATE_B}
-    test_cases[3] = 8'hE8; // Test case 3: {A:1, B:1, O:1, state:STATE_O}
-    test_cases[4] = 8'h01; // Test case 4: {A:0, B:0, O:0, state:IDLE} (from STATE_O)
-    test_cases[5] = 8'h01; // Test case 5: {A:0, B:0, O:0, state:IDLE} (back to IDLE)
+    test_cases[3] = 8'hC2; // Test case 3: {A:1, B:1, O:0, state:STATE_A}
+    test_cases[4] = 8'hA8; // Test case 4: {A:1, B:0, O:1, state:STATE_O}
+    test_cases[5] = 8'hE8; // Test case 5: {A:1, B:1, O:1, state:STATE_O}
+    test_cases[6] = 8'hE8; // Test case 6: {A:1, B:1, O:1, state:STATE_O}
+    test_cases[7] = 8'h01; // Test case 7: {A:0, B:0, O:0, state:IDLE}
 
 
     // Run test cases
-    for (i = 0; i < 6; i = i + 1) begin
+    for (i = 0; i < 8; i = i + 1) begin
         A = test_cases[i][7];
         B = test_cases[i][6];
 
@@ -83,4 +85,5 @@ initial begin
 end
 
 endmodule
+
 

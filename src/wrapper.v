@@ -1,91 +1,103 @@
-module wrapper (
+module jblocklove_cgpt_benchmark_wrapper (
     input wire [7:0] io_in,
-    output wire [7:0] io_out
+    output reg [7:0] io_out
 );
 
-    // Generate clock and reset signals from io_in
-    wire clk = io_in[6];
-    wire reset_n = io_in[7];
+    wire clk = io_in[0];
+    wire reset_n = io_in[1];
+    wire [7:0] shift_register_out;
+    wire [7:0] sequence_generator_out;
+    wire [7:0] lfsr_out;
+    wire [7:0] dice_roller_out;
+    wire [2:0] sequence_detector_data;
+    wire sequence_found;
+    wire A, B, O;
+    wire [3:0] state;
+    wire [4:0] binary_input;
+    wire [3:0] bcd_tens, bcd_units;
+    wire red, yellow, green;
 
-    // Instantiate the benchmark modules
-    shift_register sr (
+    // Instantiate modules
+    shift_register shift_reg (
         .clk(clk),
         .reset_n(reset_n),
-        .data_in(io_in[5]),
-        .shift_enable(io_in[4]),
-        .data_out(/* connected below */)
+        .data_in(io_in[2]),
+        .shift_enable(io_in[3]),
+        .data_out(shift_register_out)
     );
 
-    sequence_generator sg (
+    sequence_generator seq_gen (
         .clock(clk),
         .reset_n(reset_n),
         .enable(io_in[4]),
-        .data(/* connected below */)
+        .data(sequence_generator_out)
     );
 
-    sequence_detector sd (
+    sequence_detector seq_det (
         .clk(clk),
         .reset_n(reset_n),
-        .data(io_in[4:2]),
-        .sequence_found(/* connected below */)
+        .data(sequence_detector_data),
+        .sequence_found(sequence_found)
     );
 
-    abro_state_machine asm (
+    abro_state_machine abro_sm (
         .clk(clk),
         .reset_n(reset_n),
-        .A(io_in[4]),
-        .B(io_in[5]),
-        .O(/* connected below */),
-        .state(/* not used */)
+        .A(io_in[2]),
+        .B(io_in[3]),
+        .O(O),
+        .state(state)
     );
 
-    binary_to_bcd btb (
-        .binary_input(io_in[4:0]),
-        .bcd_tens(/* connected below */),
-        .bcd_units(/* connected below */)
+    binary_to_bcd b2b (
+        .binary_input(binary_input),
+        .bcd_tens(bcd_tens),
+        .bcd_units(bcd_units)
     );
 
-    lfsr lf (
+    lfsr lfsr_inst (
         .clk(clk),
         .reset_n(reset_n),
-        .data(/* connected below */)
+        .data(lfsr_out)
     );
 
-    traffic_light tl (
+    traffic_light traffic_inst (
         .clk(clk),
         .reset_n(reset_n),
-        .enable(io_in[4]),
-        .red(/* connected below */),
-        .yellow(/* connected below */),
-        .green(/* connected below */)
+        .enable(io_in[3]),
+        .red(red),
+        .yellow(yellow),
+        .green(green)
     );
 
-    dice_roller dr (
+    dice_roller dice_inst (
         .clk(clk),
         .reset_n(reset_n),
-        .die_select(io_in[4:3]),
-        .roll(io_in[5]),
-        .rolled_number(/* connected below */)
+        .die_select({io_in[2], io_in[3]}),
+        .roll(io_in[4]),
+        .rolled_number(dice_roller_out)
     );
 
-    // Connect the outputs based on the 3 bits of the io_in signal
-    wire [7:0] data_out_sr, data_out_sg, data_out_sd, data_out_asm, data_out_btb, data_out_lf, data_out_tl, data_out_dr;
-    assign data_out_sr = sr.data_out;
-    assign data_out_sg = sg.data;
-    assign data_out_sd = {6'b0, sd.sequence_found};
-    assign data_out_asm = {6'b0, asm.O};
-    assign data_out_btb = {btb.bcd_tens, btb.bcd_units};
-    assign data_out_lf = lf.data;
-    assign data_out_tl = {5'b0, tl.red, tl.yellow, tl.green};
-    assign data_out_dr = {5'b0, dr.rolled_number};
+    // Connect additional inputs and outputs
+    assign sequence_detector_data = io_in[4:2];
+    assign A = io_in[2];
+    assign B = io_in[3];
+    assign binary_input = io_in[4:0];
 
-    assign io_out = (io_in[2:0] == 3'b000) ? data_out_sr :
-                    (io_in[2:0] == 3'b001) ? data_out_sg :
-                    (io_in[2:0] == 3'b010) ? data_out_sd :
-                    (io_in[2:0] == 3'b011) ? data_out_asm :
-                    (io_in[2:0] == 3'b100) ? data_out_btb :
-                    (io_in[2:0] == 3'b101) ? data_out_lf :
-                    (io_in[2:0] == 3'b110) ? data_out_tl :
-                                            data_out_dr;
+    // Select output based on 3-bit selector
+    always @(*) begin
+        case (io_in[7:5])
+            3'b000: io_out = shift_register_out;
+            3'b001: io_out = sequence_generator_out;
+            3'b010: io_out = {sequence_found, 7'b0};
+            3'b011: io_out = {O, state};
+            3'b100: io_out = {bcd_tens, bcd_units};
+            3'b101: io_out = lfsr_out;
+            3'b110: io_out = {red, yellow, green, 5'b0};
+            3'b111: io_out = dice_roller_out;
+            default: io_out = 8'b0;
+        endcase
+    end
 
+endmodule
 
