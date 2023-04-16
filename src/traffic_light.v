@@ -8,7 +8,7 @@ module traffic_light (
 );
 
 // Define the states
-reg [1:0] current_state;
+reg [1:0] current_state, next_state;
 parameter RED = 2'b00, GREEN = 2'b01, YELLOW = 2'b10;
 
 // Counter for clock cycles
@@ -16,18 +16,19 @@ reg [5:0] counter;
 
 // Next state logic
 always @(*) begin
+    next_state = current_state;
     case (current_state)
         RED: begin
             if (counter >= 6'd31)
-                current_state = GREEN;
+                next_state = GREEN;
         end
         GREEN: begin
             if (counter >= 6'd19)
-                current_state = YELLOW;
+                next_state = YELLOW;
         end
         YELLOW: begin
             if (counter >= 6'd6)
-                current_state = RED;
+                next_state = RED;
         end
     endcase
 end
@@ -38,18 +39,11 @@ always @(posedge clk or negedge reset_n) begin
         current_state <= RED;
         counter <= 6'd0;
     end else if (enable) begin
-        if (current_state == RED && counter >= 6'd31) begin
-            current_state <= GREEN;
-            counter <= 6'd0;
-        end else if (current_state == GREEN && counter >= 6'd19) begin
-            current_state <= YELLOW;
-            counter <= 6'd0;
-        end else if (current_state == YELLOW && counter >= 6'd6) begin
-            current_state <= RED;
-            counter <= 6'd0;
-        end else begin
+        current_state <= next_state;
+        if (current_state == next_state)
             counter <= counter + 6'd1;
-        end
+        else
+            counter <= 6'd0;
     end
 end
 
