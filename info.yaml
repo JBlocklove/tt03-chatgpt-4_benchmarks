@@ -36,20 +36,20 @@ documentation:
 
     As a result of the designs being 100% created by ChatGPT, they all passed their ChatGPT-created testbenches, but several are not functionally correct as the generated testbenches are insufficient or incorrect.
 
-  ##### Wrapper Module/Multiplexer
+    ##### Wrapper Module/Multiplexer
 
-  The top level module for the design is a wrapper module/multiplexer which allows the user to select which benchmark is being used for the output of the design. Using `io_in[7:5]`, the user can select which benchmark will output to the `io_out` pins.
+    The top level module for the design is a wrapper module/multiplexer which allows the user to select which benchmark is being used for the output of the design. Using `io_in[7:5]`, the user can select which benchmark will output to the `io_out` pins.
 
-  | Select `[7:5]` | Benchmark          |
-  |----------------|--------------------|
-  | `000`          | Shift Register     |
-  | `001`          | Sequence Generator |
-  | `010`          | Sequence Detector  |
-  | `011`          | ABRO               |
-  | `100`          | Binary to BCD      |
-  | `101`          | LFSR               |
-  | `110`          | Traffic Light      |
-  | `111`          | Dice Roller        |
+    | Select `[7:5]` | Benchmark          |
+    |----------------|--------------------|
+    | `000`          | Shift Register     |
+    | `001`          | Sequence Generator |
+    | `010`          | Sequence Detector  |
+    | `011`          | ABRO               |
+    | `100`          | Binary to BCD      |
+    | `101`          | LFSR               |
+    | `110`          | Traffic Light      |
+    | `111`          | Dice Roller        |
 
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
