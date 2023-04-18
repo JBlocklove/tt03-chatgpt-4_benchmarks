@@ -32,7 +32,9 @@ documentation:
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
-      Explain how your project works
+    This design implements a series of benchmark circuits muxed together, all of which was written by ChatGPT-4. A series of prompts for each circuit were created which had ChatGPT create the design itself as well as a Verilog testbench for the design, and the design was considered finalized when the testbench did not throw any errors. As much of the feedback as possible was given by the tools: [Icarus Verilog](https://github.com/steveicarus/iverilog) for simulation and the Tiny Tapeout OpenLane/yosys toolchain for synthesis.
+
+    As a result of the designs being 100% created by ChatGPT, several passed the ChatGPT-created testbenches while not actually being functionally correct.
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
