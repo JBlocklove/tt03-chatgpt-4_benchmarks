@@ -36,7 +36,8 @@ documentation:
 
     As a result of the designs being 100% created by ChatGPT, they all passed their ChatGPT-created testbenches, but several are not functionally correct as the generated testbenches are insufficient or incorrect.
 
-    ##### Wrapper Module/Multiplexer
+  ##### Wrapper Module/Multiplexer
+
   The top level module for the design is a wrapper module/multiplexer which allows the user to select which benchmark is being used for the output of the design. Using `io_in[7:5]`, the user can select which benchmark will output to the `io_out` pins.
 
   | Select `[7:5]` | Benchmark          |
