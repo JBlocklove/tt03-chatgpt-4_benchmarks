@@ -32,20 +32,23 @@ documentation:
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
-    This design implements a series of benchmark circuits muxed together, all of which was written by ChatGPT-4. A series of prompts for each circuit were created which had ChatGPT create the design itself as well as a Verilog testbench for the design, and the design was considered finalized when the testbench did not throw any errors. As much of the feedback as possible was given by the tools: [Icarus Verilog](https://github.com/steveicarus/iverilog) for simulation and the Tiny Tapeout OpenLane/yosys toolchain for synthesis.
+    This design implements a series of 8 benchmark circuits selectable by 3 bits of the design input, all of which written by ChatGPT-4. A series of prompts for each circuit were created which had ChatGPT design the module itself as well as a Verilog testbench for the design, and the design was considered finalized when there were no errors from simulation or synthesis. As much of the feedback as possible was given by the tools -- [Icarus Verilog](https://github.com/steveicarus/iverilog) for simulation and the Tiny Tapeout OpenLane/yosys toolchain for synthesis.
 
-    As a result of the designs being 100% created by ChatGPT, several passed the ChatGPT-created testbenches while not actually being functionally correct.
+    As a result of the designs being 100% created by ChatGPT, they all passed their ChatGPT-created testbenches, but several are not functionally correct as the generated testbenches are insufficient or incorrect.
 
-    Testing headers-
-    # h1
+    ##### Wrapper Module/Multiplexer
+  The top level module for the design is a wrapper module/multiplexer which allows the user to select which benchmark is being used for the output of the design. Using `io_in[7:5]`, the user can select which benchmark will output to the `io_out` pins.
 
-    ## h2
-
-    ### h3
-
-    #### h4
-
-    ##### h5
+  | Select `[7:5]` | Benchmark          |
+  |----------------|--------------------|
+  | `000`          | Shift Register     |
+  | `001`          | Sequence Generator |
+  | `010`          | Sequence Detector  |
+  | `011`          | ABRO               |
+  | `100`          | Binary to BCD      |
+  | `101`          | LFSR               |
+  | `110`          | Traffic Light      |
+  | `111`          | Dice Roller        |
 
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
