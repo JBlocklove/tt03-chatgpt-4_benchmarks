@@ -36,12 +36,12 @@ documentation:
 
     As a result of the designs being 100% created by ChatGPT, they all passed their ChatGPT-created testbenches, but several are not functionally correct as the generated testbenches are insufficient or incorrect.
 
-    ##### Wrapper Module/Multiplexer
+    ### Wrapper Module/Multiplexer
 
     The top level module for the design is a wrapper module/multiplexer which allows the user to select which benchmark is being used for the output of the design. Using `io_in[7:5]`, the user can select which benchmark will output to the `io_out` pins.
 
-    | Select `[7:5]` | Benchmark          |
-    |----------------|--------------------|
+    | `io_in[7:5]`   | Benchmark          |
+    |---------------:|:-------------------|
     | `000`          | Shift Register     |
     | `001`          | Sequence Generator |
     | `010`          | Sequence Detector  |
@@ -50,6 +50,50 @@ documentation:
     | `101`          | LFSR               |
     | `110`          | Traffic Light      |
     | `111`          | Dice Roller        |
+
+
+    ### Shift Register
+
+    ##### ChatGPT Prompt
+
+    ```
+    I am trying to create a Verilog model for a shift register. It must meet the following specifications:
+    	- Inputs:
+    		- Clock
+    		- Active-low reset
+    		- Data (1 bit)
+    		- Shift enable
+    	- Outputs:
+    		- Data (8 bits)
+
+    How would I write a design that meets these specifications?
+    ```
+
+    ##### Benchmark I/O Mapping
+
+    | # | Input           | Output             |
+    |---|-----------------|--------------------|
+    | 0 | `clk`           | Shifted data [0]   |
+    | 1 | `rst_n` (async) | Shifted data [1]   |
+    | 2 | `data_in`       | Shifted data [2]   |
+    | 3 | `shift_enable`  | Shifted data [3]   |
+    | 4 | Not used        | Shifted data [4]   |
+    | 5 | Not used        | Shifted data [5]   |
+    | 6 | Not used        | Shifted data [6]   |
+    | 7 | Not used        | Shifted data [7]   |
+
+    ##### Expected Functionality
+
+    The expected functionality of this shift register module is to shift the `data_in` bit in on the right side of the data vector on any rising `clk` edge where `shift_enable` is high.
+
+    ##### Actual Functionality
+
+    The module seems to function as intended.
+
+
+    ### Sequence Generator
+
+    ##### ChatGPT Prompt
 
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
