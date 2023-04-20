@@ -88,13 +88,4 @@ module tb_dice_roller;
     $finish;
 end
 
-reg vcd_clk;
-initial begin
-    $dumpfile("my_design.vcd");
-    $dumpvars(0, tb_dice_roller);
-end
-
-always #5 vcd_clk = ~vcd_clk; // Toggle clock every 5 time units
-
-
 endmodule
