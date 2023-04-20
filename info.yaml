@@ -544,9 +544,9 @@ documentation:
     - Depends on benchmark
     - Depends on benchmark
     - Depends on benchmark
-    - `benchmark_select[0]`
-    - `benchmark_select[1]`
-    - `benchmark_select[2]`
+    - benchmark_select[0]
+    - benchmark_select[1]
+    - benchmark_select[2]
 # A description of what the outputs do
   outputs:
     - Depends on benchmark
