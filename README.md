@@ -2,9 +2,14 @@
 
 
 # Fully ChatGPT-4 Created Benchmarks
+
+### How it Works
+
 This design implements a series of 8 benchmark circuits selectable by 3 bits of the design input, all of which written by ChatGPT-4. A series of prompts for each circuit were created which had ChatGPT design the module itself as well as a Verilog testbench for the design, and the design was considered finalized when there were no errors from simulation or synthesis. As much of the feedback as possible was given by the tools -- [Icarus Verilog](https://github.com/steveicarus/iverilog) for simulation and the Tiny Tapeout OpenLane/yosys toolchain for synthesis.
 
 As a result of the designs being 100% created by ChatGPT, they all passed their ChatGPT-created testbenches, but several are not functionally correct as the generated testbenches are insufficient or incorrect. The best example of this is the **Dice Roller** benchmark, which has a constant output but passes its testbench fully.
+
+The only design with a human-made testbench is the **Wrapper Module**, whose testbench uses dummy modules just to ensure the multiplexing works as expected. It seemed unrealistic to have ChatGPT create a testbench for every benchmark all in one given the token limits and how it struggled to make some of the standalone testbenches.
 
 The complete transcripts of the ChatGPT conversations can be found at https://github.com/JBlocklove/tt03-chatgpt-4_benchmarks/tree/main/conversations
 
@@ -12,7 +17,7 @@ The complete transcripts of the ChatGPT conversations can be found at https://gi
 
 ### Wrapper Module/Multiplexer
 
-##### ChatGPT Prompt
+#### ChatGPT Prompt
 ```
 I am trying to create a Verilog model for a wrapper around several benchmarks, sepecifically for the Tiny Tapeout project. It must meet the following specifications:
     - Inputs:
@@ -94,7 +99,7 @@ Benchmarks:
 How would I write a design that meets these specifications?
 ```
 
-##### Benchmark I/O Mapping
+#### Benchmark I/O Mapping
 
 | `io_in[7:5]`   | Benchmark          |
 |---------------:|:-------------------|
@@ -107,13 +112,13 @@ How would I write a design that meets these specifications?
 | `110`          | Traffic Light      |
 | `111`          | Dice Roller        |
 
-##### Expected Functionality
+#### Expected Functionality
 
 The top level module for the design is a wrapper module/multiplexer which allows the user to select which benchmark is being used for the output of the design. Using `io_in[7:5]`, the user can select which benchmark will output to the `io_out` pins.
 
 This module was created after all of the other designs were finalized so their port mappings could be given
 
-##### Actual Functionality
+#### Actual Functionality
 
 The module functions as intended. This is the only module with a human-written testbench, as it seemed unrealistic to have ChatGPT create a full testbench that confirmed the module instantiations worked given how much it struggled with some of the other testbenches.
 
@@ -121,7 +126,7 @@ The module functions as intended. This is the only module with a human-written t
 
 ### Shift Register
 
-##### ChatGPT Prompt
+#### ChatGPT Prompt
 
 ```
 I am trying to create a Verilog model for a shift register. It must meet the following
@@ -137,7 +142,7 @@ specifications:
 How would I write a design that meets these specifications?
 ```
 
-##### Benchmark I/O Mapping
+#### Benchmark I/O Mapping
 
 | # | Input           | Output             |
 |---|-----------------|--------------------|
@@ -150,11 +155,11 @@ How would I write a design that meets these specifications?
 | 6 | Not used        | Shifted data [6]   |
 | 7 | Not used        | Shifted data [7]   |
 
-##### Expected Functionality
+#### Expected Functionality
 
 The expected functionality of this shift register module is to shift the `data_in` bit in on the right side of the data vector on any rising `clk` edge where `shift_enable` is high.
 
-##### Actual Functionality
+#### Actual Functionality
 
 The module seems to function as intended.
 
@@ -162,7 +167,7 @@ The module seems to function as intended.
 
 ### Sequence Generator
 
-##### ChatGPT Prompt
+#### ChatGPT Prompt
 ```
 I am trying to create a Verilog model for a sequence generator. It must meet the following
 specifications:
@@ -187,7 +192,7 @@ then repeat:
 How would I write a design that meets these specifications?
 ```
 
-##### Benchmark I/O Mapping
+#### Benchmark I/O Mapping
 
 | # | Input           | Output                |
 |---|-----------------|-----------------------|
@@ -200,7 +205,7 @@ How would I write a design that meets these specifications?
 | 6 | Not used        | Sequence Output [6]   |
 | 7 | Not used        | Sequence Output [7]   |
 
-##### Expected Functionality
+#### Expected Functionality
 
 The expected functionality of this sequence generator is to output the following sequence, moving a step forward whenever the `clk` has a rising edge and the `enable` is high. Once the sequence has reached its end it should repeat.
 
@@ -215,7 +220,7 @@ The expected functionality of this sequence generator is to output the following
 0x8D
 ```
 
-##### Actual Functionality
+#### Actual Functionality
 
 The module functions as intended.
 
@@ -223,7 +228,7 @@ The module functions as intended.
 
 ### Sequence Detector
 
-##### ChatGPT Prompt
+#### ChatGPT Prompt
 ```
 I am trying to create a Verilog model for a sequence detector. It must meet the following
 specifications:
@@ -247,7 +252,7 @@ While enabled, it should detect the following sequence of binary input values:
 How would I write a design that meets these specifications?
 ```
 
-##### Benchmark I/O Mapping
+#### Benchmark I/O Mapping
 
 | # | Input           | Output                |
 |---|-----------------|-----------------------|
@@ -260,7 +265,7 @@ How would I write a design that meets these specifications?
 | 6 | Not used        | Not Used              |
 | 7 | Not used        | Sequence Found        |
 
-##### Expected Functionality
+#### Expected Functionality
 
 The expected functionality of this sequence detector is to output a `1` if it receives the following sequence of data all on consecutive clock cycles.
 
@@ -275,7 +280,7 @@ The expected functionality of this sequence detector is to output a `1` if it re
 0b101
 ```
 
-##### Actual Functionality
+#### Actual Functionality
 
 The module does not correctly detect the sequence. In trying to set the states to allow the sequence to overlap it instead skips the final value or outputs a `1` if the second to last value and final value are both `0b101`.
 
@@ -283,7 +288,7 @@ The module does not correctly detect the sequence. In trying to set the states t
 
 ### ABRO State Machine
 
-##### ChatGPT Prompt
+#### ChatGPT Prompt
 ```
 I am trying to create a Verilog model for an ABRO state machine. It must meet the following
 specifications:
@@ -304,7 +309,7 @@ The states for this state machine should be one-hot encoded.
 How would I write a design that meets these specifications?
 ```
 
-##### Benchmark I/O Mapping
+#### Benchmark I/O Mapping
 
 | # | Input             | Output                |
 |---|-------------------|-----------------------|
@@ -317,11 +322,11 @@ How would I write a design that meets these specifications?
 | 6 | Not used          | Not used              |
 | 7 | Not used          | Not used              |
 
-##### Expected Functionality
+#### Expected Functionality
 
 The expected functionality of the ABRO (A, B, Reset, Output) state machine is to only reach the output state and output a `1` when both inputs `A` and `B` have been given before a reset. The order of the inputs should not matter, so long as both `A` and `B` are set.
 
-##### Actual Functionality
+#### Actual Functionality
 
 The module does not function fully as intended. If `B` is received before `A` then it works as intended, but if `A` is received first then it actually requires the sequence `A, B, A` in order to reach the output state. It also does not handle the case where `A` and `B` are set in the same cycle, instead interpreting it as if `A` was received first.
 
@@ -329,7 +334,7 @@ The module does not function fully as intended. If `B` is received before `A` th
 
 ### Binary to BCD Converter
 
-##### ChatGPT Prompt
+#### ChatGPT Prompt
 ```
 I am trying to create a Verilog model for a binary to binary-coded-decimal converter. It must
 meet the following specifications:
@@ -341,7 +346,7 @@ meet the following specifications:
 How would I write a design that meets these specifications?
 ```
 
-##### Benchmark I/O Mapping
+#### Benchmark I/O Mapping
 
 | # | Input             | Output         |
 |---|-------------------|----------------|
@@ -354,11 +359,11 @@ How would I write a design that meets these specifications?
 | 6 | Not used          | BCD Tens [2]   |
 | 7 | Not used          | BCD Tens [3]   |
 
-##### Expected Functionality
+#### Expected Functionality
 
 The expected functionality of this module is to take a 5-bit binary number and produce a binary-coded-decimal output. The 4 most significant bits of the output encode to the tens place of the decimal number, the 4 least signification bits of the output encode the ones place of the decimal number
 
-##### Actual Functionality
+#### Actual Functionality
 
 The module functions as intended.
 
@@ -366,7 +371,7 @@ The module functions as intended.
 
 ### Linear Feedback Shift Register (LFSR)
 
-##### ChatGPT Prompt
+#### ChatGPT Prompt
 ```
 I am trying to create a Verilog model for an LFSR. It must meet the following specifications:
 	- Inputs:
@@ -380,7 +385,7 @@ The initial state should be 10001010, and the taps should be at locations 1, 4, 
 How would I write a design that meets these specifications?
 ```
 
-##### Benchmark I/O Mapping
+#### Benchmark I/O Mapping
 
 | # | Input           | Output            |
 |---|-----------------|-------------------|
@@ -393,15 +398,21 @@ How would I write a design that meets these specifications?
 | 6 | Not used        | Data Output [6]   |
 | 7 | Not used        | Data Output [7]   |
 
-##### Expected Functionality
+#### Expected Functionality
 
-##### Actual Functionality
+The expected functionality of this module is to generate a pseudo-random output value from this LFSR based on the tap locations given in the prompt.
+
+It was unspecified in the prompt, but originally it was expected that the LFSR would shift right as is standard amongst most documentation. It instead shifts to the left, which is not inherently incorrect but warrants mentioning.
+
+#### Actual Functionality
+
+This module functions almost as expected, except the taps were placed on indices off-by-one. Rather than being at indices 1, 4, 6, and 7, they are at indices 0, 3, 5, and 6. This is still a valid LFSR, it is just not quite was was requested.
 
 ---
 
 ### Traffic Light State Machine
 
-##### ChatGPT Prompt
+#### ChatGPT Prompt
 ```
 I am trying to create a Verilog model for a traffic light state machine. It must meet the
 following specifications:
@@ -421,7 +432,7 @@ clock cycles.
 How would I write a design that meets these specifications?
 ```
 
-##### Benchmark I/O Mapping
+#### Benchmark I/O Mapping
 
 | # | Input           | Output                |
 |---|-----------------|-----------------------|
@@ -434,11 +445,11 @@ How would I write a design that meets these specifications?
 | 6 | Not used        | Yellow                |
 | 7 | Not used        | Red                   |
 
-##### Expected Functionality
+#### Expected Functionality
 
 The expected functionality of this module is to simulate the function of a timed traffic light. On a reset it outputs a red light, waits 32 clock cycles and then changed to a green light, waits 20 clock cycles and then changes to a yellow light, waits 7 clock cycles and then changes back to red. This should then repeat. If the enable is low, then it should pause the operation entirely and pick up again once the enable is brought high again.
 
-##### Actual Functionality
+#### Actual Functionality
 
 The module functions as intended.
 
@@ -446,7 +457,7 @@ The module functions as intended.
 
 ### Dice Roller
 
-##### ChatGPT Prompt
+#### ChatGPT Prompt
 ```
 I am trying to create a Verilog model for a simulated dice roller. It must meet the following
 specifications:
@@ -465,10 +476,10 @@ based on the number of sides of the selected die.
 How would I write a design that meets these specifications?
 ```
 
-##### Benchmark I/O Mapping
+#### Benchmark I/O Mapping
 
-| # | Input           | Output                |
-|---|-----------------|-----------------------|
+| # | Input           | Output        |
+|---|-----------------|---------------|
 | 0 | `clk`           | Dice Roll [0] |
 | 1 | `rst_n` (async) | Dice Roll [1] |
 | 2 | `die_select[1]` | Dice Roll [2] |
@@ -478,7 +489,7 @@ How would I write a design that meets these specifications?
 | 6 | Not used        | Dice Roll [6] |
 | 7 | Not used        | Dice Roll [7] |
 
-##### Expected Functionality
+#### Expected Functionality
 
 The expected functionality of this dice roller is to allow the user to select which die they would like to simulate rolling based on the following table:
 
@@ -491,12 +502,23 @@ The expected functionality of this dice roller is to allow the user to select wh
 
 When `roll` is high the module should output a new pseudo-random value in the range `[1 - Number of sides]`
 
-##### Actual Functionality
+#### Actual Functionality
 
 This module outputs `2` for the first two dice rolls and then consistently outputs a `1` regardless of what die is selected.
 
 ---
 ---
+
+### How to Test
+
+Testing this design has some difficulties as there are several different functionalities that are selected between and not all work as expected.
+
+The following tables give input test vectors and their expected outputs:
+
+#### Shift Register
+| Given Input | Expected Output|
+|-------------|----------------|
+|`00000000`   |`00000000`      |
 
 # What is Tiny Tapeout?
 
