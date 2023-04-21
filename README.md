@@ -129,8 +129,7 @@ The module functions as intended. This is the only module with a human-written t
 #### ChatGPT Prompt
 
 ```
-I am trying to create a Verilog model for a shift register. It must meet the following
-specifications:
+I am trying to create a Verilog model for a shift register. It must meet the following specifications:
 	- Inputs:
 		- Clock
 		- Active-low reset
@@ -151,9 +150,9 @@ How would I write a design that meets these specifications?
 | 2 | `data_in`       | Shifted data [2]   |
 | 3 | `shift_enable`  | Shifted data [3]   |
 | 4 | Not used        | Shifted data [4]   |
-| 5 | Not used        | Shifted data [5]   |
-| 6 | Not used        | Shifted data [6]   |
-| 7 | Not used        | Shifted data [7]   |
+| 5 | Select bit      | Shifted data [5]   |
+| 6 | Select bit      | Shifted data [6]   |
+| 7 | Select bit      | Shifted data [7]   |
 
 #### Expected Functionality
 
@@ -169,8 +168,7 @@ The module seems to function as intended.
 
 #### ChatGPT Prompt
 ```
-I am trying to create a Verilog model for a sequence generator. It must meet the following
-specifications:
+I am trying to create a Verilog model for a sequence generator. It must meet the following specifications:
 	- Inputs:
 		- Clock
 		- Active-low reset
@@ -201,9 +199,9 @@ How would I write a design that meets these specifications?
 | 2 | Not used        | Sequence Output [2]   |
 | 3 | Not used        | Sequence Output [3]   |
 | 4 | `enable`        | Sequence Output [4]   |
-| 5 | Not used        | Sequence Output [5]   |
-| 6 | Not used        | Sequence Output [6]   |
-| 7 | Not used        | Sequence Output [7]   |
+| 5 | Select bit      | Sequence Output [5]   |
+| 6 | Select bit      | Sequence Output [6]   |
+| 7 | Select bit      | Sequence Output [7]   |
 
 #### Expected Functionality
 
@@ -230,8 +228,7 @@ The module functions as intended.
 
 #### ChatGPT Prompt
 ```
-I am trying to create a Verilog model for a sequence detector. It must meet the following
-specifications:
+I am trying to create a Verilog model for a sequence detector. It must meet the following specifications:
 	- Inputs:
 		- Clock
 		- Active-low reset
@@ -261,9 +258,9 @@ How would I write a design that meets these specifications?
 | 2 | `data[0]`       | Not Used              |
 | 3 | `data[1]`       | Not Used              |
 | 4 | `data[2]`       | Not Used              |
-| 5 | Not used        | Not Used              |
-| 6 | Not used        | Not Used              |
-| 7 | Not used        | Sequence Found        |
+| 5 | Select bit      | Not Used              |
+| 6 | Select bit      | Not Used              |
+| 7 | Select bit      | Sequence Found        |
 
 #### Expected Functionality
 
@@ -290,8 +287,7 @@ The module does not correctly detect the sequence. In trying to set the states t
 
 #### ChatGPT Prompt
 ```
-I am trying to create a Verilog model for an ABRO state machine. It must meet the following
-specifications:
+I am trying to create a Verilog model for an ABRO state machine. It must meet the following specifications:
     - Inputs:
         - Clock
         - Active-low reset
@@ -301,8 +297,7 @@ specifications:
         - O
         - State
 
-Other than the main output from ABRO machine, it should output the current state of the machine
-for use in verification.
+Other than the main output from ABRO machine, it should output the current state of the machine for use in verification.
 
 The states for this state machine should be one-hot encoded.
 
@@ -318,9 +313,9 @@ How would I write a design that meets these specifications?
 | 2 | `A`               | State [2]             |
 | 3 | `B`               | State [3]             |
 | 4 | Not used          | Output                |
-| 5 | Not used          | Not used              |
-| 6 | Not used          | Not used              |
-| 7 | Not used          | Not used              |
+| 5 | Select bit        | Not used              |
+| 6 | Select bit        | Not used              |
+| 7 | Select bit        | Not used              |
 
 #### Expected Functionality
 
@@ -336,8 +331,7 @@ The module does not function fully as intended. If `B` is received before `A` th
 
 #### ChatGPT Prompt
 ```
-I am trying to create a Verilog model for a binary to binary-coded-decimal converter. It must
-meet the following specifications:
+I am trying to create a Verilog model for a binary to binary-coded-decimal converter. It must meet the following specifications:
 	- Inputs:
 		- Binary input (5-bits)
 	- Outputs:
@@ -355,9 +349,9 @@ How would I write a design that meets these specifications?
 | 2 | `binary_input[2]` | BCD Ones [2]   |
 | 3 | `binary_input[3]` | BCD Ones [3]   |
 | 4 | `binary_input[4]` | BCD Tens [0]   |
-| 5 | Not used          | BCD Tens [1]   |
-| 6 | Not used          | BCD Tens [2]   |
-| 7 | Not used          | BCD Tens [3]   |
+| 5 | Select bit        | BCD Tens [1]   |
+| 6 | Select bit        | BCD Tens [2]   |
+| 7 | Select bit        | BCD Tens [3]   |
 
 #### Expected Functionality
 
@@ -394,9 +388,9 @@ How would I write a design that meets these specifications?
 | 2 | Not used        | Data Output [2]   |
 | 3 | Not used        | Data Output [3]   |
 | 4 | Not used        | Data Output [4]   |
-| 5 | Not used        | Data Output [5]   |
-| 6 | Not used        | Data Output [6]   |
-| 7 | Not used        | Data Output [7]   |
+| 5 | Select bit      | Data Output [5]   |
+| 6 | Select bit      | Data Output [6]   |
+| 7 | Select bit      | Data Output [7]   |
 
 #### Expected Functionality
 
@@ -414,8 +408,7 @@ This module functions almost as expected, except the taps were placed on indices
 
 #### ChatGPT Prompt
 ```
-I am trying to create a Verilog model for a traffic light state machine. It must meet the
-following specifications:
+I am trying to create a Verilog model for a traffic light state machine. It must meet the following specifications:
     - Inputs:
         - Clock
         - Active-low reset
@@ -441,9 +434,9 @@ How would I write a design that meets these specifications?
 | 2 | Not used        | Sequence Output [2]   |
 | 3 | `enable`        | Sequence Output [3]   |
 | 4 | Not used        | Sequence Output [4]   |
-| 5 | Not used        | Green                 |
-| 6 | Not used        | Yellow                |
-| 7 | Not used        | Red                   |
+| 5 | Select bit      | Green                 |
+| 6 | Select bit      | Yellow                |
+| 7 | Select bit      | Red                   |
 
 #### Expected Functionality
 
@@ -459,8 +452,7 @@ The module functions as intended.
 
 #### ChatGPT Prompt
 ```
-I am trying to create a Verilog model for a simulated dice roller. It must meet the following
-specifications:
+I am trying to create a Verilog model for a simulated dice roller. It must meet the following specifications:
     - Inputs:
         - Clock
         - Active-low reset
@@ -485,9 +477,9 @@ How would I write a design that meets these specifications?
 | 2 | `die_select[1]` | Dice Roll [2] |
 | 3 | `die_select[0]` | Dice Roll [3] |
 | 4 | `roll`          | Dice Roll [4] |
-| 5 | Not used        | Dice Roll [5] |
-| 6 | Not used        | Dice Roll [6] |
-| 7 | Not used        | Dice Roll [7] |
+| 5 | Select bit      | Dice Roll [5] |
+| 6 | Select bit      | Dice Roll [6] |
+| 7 | Select bit      | Dice Roll [7] |
 
 #### Expected Functionality
 
