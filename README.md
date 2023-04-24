@@ -143,16 +143,16 @@ How would I write a design that meets these specifications?
 
 #### Benchmark I/O Mapping
 
-| # | Input           | Output             |
-|---|-----------------|--------------------|
-| 0 | `clk`           | Shifted data [0]   |
-| 1 | `rst_n` (async) | Shifted data [1]   |
-| 2 | `data_in`       | Shifted data [2]   |
-| 3 | `shift_enable`  | Shifted data [3]   |
-| 4 | Not used        | Shifted data [4]   |
-| 5 | Select bit      | Shifted data [5]   |
-| 6 | Select bit      | Shifted data [6]   |
-| 7 | Select bit      | Shifted data [7]   |
+| # | Input             | Output             |
+|---|-------------------|--------------------|
+| 0 | `clk`             | Shifted data [0]   |
+| 1 | `reset_n` (async) | Shifted data [1]   |
+| 2 | `data_in`         | Shifted data [2]   |
+| 3 | `shift_enable`    | Shifted data [3]   |
+| 4 | Not used          | Shifted data [4]   |
+| 5 | Select bit        | Shifted data [5]   |
+| 6 | Select bit        | Shifted data [6]   |
+| 7 | Select bit        | Shifted data [7]   |
 
 #### Expected Functionality
 
@@ -192,16 +192,16 @@ How would I write a design that meets these specifications?
 
 #### Benchmark I/O Mapping
 
-| # | Input           | Output                |
-|---|-----------------|-----------------------|
-| 0 | `clk`           | Sequence Output [0]   |
-| 1 | `rst_n` (async) | Sequence Output [1]   |
-| 2 | Not used        | Sequence Output [2]   |
-| 3 | Not used        | Sequence Output [3]   |
-| 4 | `enable`        | Sequence Output [4]   |
-| 5 | Select bit      | Sequence Output [5]   |
-| 6 | Select bit      | Sequence Output [6]   |
-| 7 | Select bit      | Sequence Output [7]   |
+| # | Input             | Output                |
+|---|-------------------|-----------------------|
+| 0 | `clk`             | Sequence Output [0]   |
+| 1 | `reset_n` (async) | Sequence Output [1]   |
+| 2 | Not used          | Sequence Output [2]   |
+| 3 | Not used          | Sequence Output [3]   |
+| 4 | `enable`          | Sequence Output [4]   |
+| 5 | Select bit        | Sequence Output [5]   |
+| 6 | Select bit        | Sequence Output [6]   |
+| 7 | Select bit        | Sequence Output [7]   |
 
 #### Expected Functionality
 
@@ -251,16 +251,16 @@ How would I write a design that meets these specifications?
 
 #### Benchmark I/O Mapping
 
-| # | Input           | Output                |
-|---|-----------------|-----------------------|
-| 0 | `clk`           | Not Used              |
-| 1 | `rst_n` (async) | Not Used              |
-| 2 | `data[0]`       | Not Used              |
-| 3 | `data[1]`       | Not Used              |
-| 4 | `data[2]`       | Not Used              |
-| 5 | Select bit      | Not Used              |
-| 6 | Select bit      | Not Used              |
-| 7 | Select bit      | Sequence Found        |
+| # | Input             | Output                |
+|---|-------------------|-----------------------|
+| 0 | `clk`             | Not Used              |
+| 1 | `reset_n` (async) | Not Used              |
+| 2 | `data[0]`         | Not Used              |
+| 3 | `data[1]`         | Not Used              |
+| 4 | `data[2]`         | Not Used              |
+| 5 | Select bit        | Not Used              |
+| 6 | Select bit        | Not Used              |
+| 7 | Select bit        | Sequence Found        |
 
 #### Expected Functionality
 
@@ -381,16 +381,16 @@ How would I write a design that meets these specifications?
 
 #### Benchmark I/O Mapping
 
-| # | Input           | Output            |
-|---|-----------------|-------------------|
-| 0 | `clk`           | Data Output [0]   |
-| 1 | `rst_n` (async) | Data Output [1]   |
-| 2 | Not used        | Data Output [2]   |
-| 3 | Not used        | Data Output [3]   |
-| 4 | Not used        | Data Output [4]   |
-| 5 | Select bit      | Data Output [5]   |
-| 6 | Select bit      | Data Output [6]   |
-| 7 | Select bit      | Data Output [7]   |
+| # | Input             | Output            |
+|---|-------------------|-------------------|
+| 0 | `clk`             | Data Output [0]   |
+| 1 | `reset_n` (async) | Data Output [1]   |
+| 2 | Not used          | Data Output [2]   |
+| 3 | Not used          | Data Output [3]   |
+| 4 | Not used          | Data Output [4]   |
+| 5 | Select bit        | Data Output [5]   |
+| 6 | Select bit        | Data Output [6]   |
+| 7 | Select bit        | Data Output [7]   |
 
 #### Expected Functionality
 
@@ -427,16 +427,16 @@ How would I write a design that meets these specifications?
 
 #### Benchmark I/O Mapping
 
-| # | Input           | Output                |
-|---|-----------------|-----------------------|
-| 0 | `clk`           | Sequence Output [0]   |
-| 1 | `rst_n` (async) | Sequence Output [1]   |
-| 2 | Not used        | Sequence Output [2]   |
-| 3 | `enable`        | Sequence Output [3]   |
-| 4 | Not used        | Sequence Output [4]   |
-| 5 | Select bit      | Green                 |
-| 6 | Select bit      | Yellow                |
-| 7 | Select bit      | Red                   |
+| # | Input             | Output                |
+|---|-------------------|-----------------------|
+| 0 | `clk`             | Sequence Output [0]   |
+| 1 | `reset_n` (async) | Sequence Output [1]   |
+| 2 | Not used          | Sequence Output [2]   |
+| 3 | `enable`          | Sequence Output [3]   |
+| 4 | Not used          | Sequence Output [4]   |
+| 5 | Select bit        | Green                 |
+| 6 | Select bit        | Yellow                |
+| 7 | Select bit        | Red                   |
 
 #### Expected Functionality
 
@@ -470,16 +470,16 @@ How would I write a design that meets these specifications?
 
 #### Benchmark I/O Mapping
 
-| # | Input           | Output        |
-|---|-----------------|---------------|
-| 0 | `clk`           | Dice Roll [0] |
-| 1 | `rst_n` (async) | Dice Roll [1] |
-| 2 | `die_select[1]` | Dice Roll [2] |
-| 3 | `die_select[0]` | Dice Roll [3] |
-| 4 | `roll`          | Dice Roll [4] |
-| 5 | Select bit      | Dice Roll [5] |
-| 6 | Select bit      | Dice Roll [6] |
-| 7 | Select bit      | Dice Roll [7] |
+| # | Input             | Output        |
+|---|-------------------|---------------|
+| 0 | `clk`             | Dice Roll [0] |
+| 1 | `reset_n` (async) | Dice Roll [1] |
+| 2 | `die_select[1]`   | Dice Roll [2] |
+| 3 | `die_select[0]`   | Dice Roll [3] |
+| 4 | `roll`            | Dice Roll [4] |
+| 5 | Select bit        | Dice Roll [5] |
+| 6 | Select bit        | Dice Roll [6] |
+| 7 | Select bit        | Dice Roll [7] |
 
 #### Expected Functionality
 
@@ -496,7 +496,18 @@ When `roll` is high the module should output a new pseudo-random value in the ra
 
 #### Actual Functionality
 
-This module outputs `2` for the first two dice rolls and then consistently outputs a `1` regardless of what die is selected.
+This module outputs `2` for the first dice roll and then consistently outputs a `1` regardless of what die is selected.
+
+---
+
+### Testbenches
+
+While not going into the actual tapeout, the testbenches were also created by ChatGPT using the following prompt:
+```
+Can you create a Verilog testbench for this design? It should be self-checking and made to work with iverilog for simulation and validation. If test cases should fail, the testbench should provide enough information that the error can be found and resolved.
+```
+
+The only exception to this is the testbench for the Wrapper module which was written using dummy modules just to ensure the multiplexing logic created by ChatGPT was working correctly.
 
 ---
 ---
@@ -505,13 +516,137 @@ This module outputs `2` for the first two dice rolls and then consistently outpu
 
 Testing this design has some difficulties as there are several different functionalities that are selected between and not all work as expected.
 
+For sequential designs the input vectors are expected to be given across consecutive clock cycles, as such for those designs `io_in[0]` will not be given. For designs with input bits that are unused, those positions will be shown as `x` to represent don't-cares.
+
 The following tables give input test vectors and their expected outputs:
 
 #### Shift Register
-| Given Input | Expected Output|
-|-------------|----------------|
-|`00000000`   |`00000000`      |
 
+| Given Input | Expected Output | Comment    |
+|-------------|-----------------|------------|
+|`000x000`    |`00000000`       | Reset      |
+|`000x001`    |`00000000`       | Disabled   |
+|`000x011`    |`00000000`       | Shift in 0 |
+|`000x111`    |`00000001`       | Shift in 1 |
+|`000x111`    |`00000011`       | Shift in 1 |
+|`000x101`    |`00000110`       | Shift in 0 |
+|`000x111`    |`00001101`       | Shift in 1 |
+|`000x011`    |`00001101`       | Disabled   |
+|`000x110`    |`00000000`       | Reset      |
+
+#### Sequence Generator
+
+| Given Input | Expected Output | Comment  |
+|-------------|-----------------|----------|
+|`0010xx0`    |`10101111`       | Reset    |
+|`0010xx1`    |`10101111`       | Disabled |
+|`0011xx1`    |`10101111`       | Enabled  |
+|`0011xx1`    |`10111100`       | Enabled  |
+|`0011xx1`    |`11100010`       | Enabled  |
+|`0011xx1`    |`01111000`       | Enabled  |
+|`0011xx1`    |`11111111`       | Enabled  |
+|`0011xx1`    |`11100010`       | Enabled  |
+|`0011xx1`    |`00001011`       | Enabled  |
+|`0010xx1`    |`10001101`       | Disabled |
+|`0011xx1`    |`10001101`       | Enabled  |
+|`0011xx0`    |`10101111`       | Reset    |
+
+#### Sequence Detector
+
+This module does not function as intended. These vectors are meant to represent what will be expected from the hardware, not what is expected from the initial design description.
+
+| Given Input | Expected Output | State     |
+|-------------|-----------------|-----------|
+|`0100000`    |`00000000`       | S0        |
+|`0100001`    |`00000000`       | S0        |
+|`0100011`    |`00000000`       | S0 -> S1  |
+|`0101011`    |`00000000`       | S1 -> S2  |
+|`0101101`    |`00000000`       | S2 -> S3  |
+|`0100001`    |`00000000`       | S3 -> S4  |
+|`0101101`    |`00000000`       | S4 -> S5  |
+|`0101101`    |`00000000`       | S5 -> S6  |
+|`0100111`    |`10000000`       | S6 -> S0  |
+|`0101011`    |`00000000`       | S0        |
+|`0100001`    |`00000000`       | S0        |
+|`0100011`    |`00000000`       | S0 -> S1  |
+|`0101011`    |`00000000`       | S1 -> S2  |
+|`0101101`    |`00000000`       | S2 -> S3  |
+|`0100001`    |`00000000`       | S3 -> S4  |
+|`0101101`    |`00000000`       | S4 -> S5  |
+|`0101101`    |`00000000`       | S5 -> S6  |
+|`0101011`    |`10000000`       | S6 -> S7  |
+|`0100111`    |`00000000`       | S7 -> S2  |
+
+#### ABRO State Machine
+
+| Given Input | Expected Output | State     |
+|-------------|-----------------|-----------|
+|`011x000`    |`00000001`       | IDLE      |
+|`011x001`    |`00000001`       | IDLE      |
+|`011x011`    |`00000010`       | IDLE -> A |
+|`011x101`    |`00000100`       | A -> B    |
+|`011x111`    |`00011000`       | B -> O    |
+|`011x111`    |`00000001`       | O -> IDLE |
+|`011x001`    |`00000001`       | IDLE      |
+|`011x101`    |`00000100`       | IDLE -> B |
+|`011x011`    |`00000100`       | B -> O    |
+|`011x011`    |`00000001`       | O -> IDLE |
+
+#### Binary to BCD Converter
+
+This design is purely combinational, so all 8-bits are included in the input vector. Clock cycles do not matter for this functionality.
+
+| Given Input  | Expected Output| Comment |
+|--------------|----------------|---------|
+|`10000001`    |`00000001`      | 1       |
+|`10011111`    |`00110001`      | 31      |
+|`10011010`    |`00100110`      | 26      |
+|`10010011`    |`00011001`      | 19      |
+
+#### LFSR
+
+As the LFSR only has a clock and reset input, the table will only give the first vectors for resetting and then setting, but it will show the first several cycles of the LFSR from the initial vector.
+
+| Given Input | Expected Output| Comment |
+|-------------|----------------|---------|
+|`0000000`    |`10001010`      |         |
+|`0000001`    |`00010101`      |         |
+| ...         |`00101011`      |         |
+| ...         |`01010111`      |         |
+| ...         |`10101110`      |         |
+| ...         |`01011100`      |         |
+| ...         |`10111001`      |         |
+
+#### Traffic Light State Machine
+
+Given the nature of this benchmark being dependent on counting clock cycles, it seems unhelpful to provide a suite of test vectors and their expected outputs. A limited set of vectors is provided with comments on their general functionality, but full testing will be left to the user's discretion.
+
+| Given Input | Expected Output| Comment |
+|-------------|----------------|---------|
+|`110x0x0`    | `10000000`      | Reset: Sets the state machine back to the initial (RED) state |
+|`110x0x1`    | Depends      | Disabled: Holds the FSM in its current state, pauses clock cycle count |
+|`110x1x1`    | Depends      | Enabled: Resumes clock cycle counting and allows state transitions        |
+
+#### Dice Roller
+
+This module does not function as intended. These vectors are meant to represent what will be expected from the hardware, not what is expected from the initial design description.
+
+| Given Input | Expected Output| Comment |
+|-------------|----------------|---------|
+|`1110000`    |`00000000`      | Reset   |
+|`1111001`    |`00000010`      | d4      |
+|`1110001`    |`00000010`      | d4      |
+|`1111101`    |`00000001`      | d6      |
+|`1110101`    |`00000001`      | d6      |
+|`1111011`    |`00000001`      | d8      |
+|`1110011`    |`00000001`      | d8      |
+|`1111111`    |`00000001`      | d20     |
+|`1110111`    |`00000001`      | d20     |
+|`1111001`    |`00000001`      | d4      |
+|`1111001`    |`00000001`      | d4      |
+
+---
+---
 # What is Tiny Tapeout?
 
 TinyTapeout is an educational project that aims to make it easier and cheaper than ever to get your digital designs manufactured on a real chip!
