@@ -11,7 +11,7 @@ As a result of the designs being 100% created by ChatGPT, they all passed their 
 
 The only design with a human-made testbench is the **Wrapper Module**, whose testbench uses dummy modules just to ensure the multiplexing works as expected. It seemed unrealistic to have ChatGPT create a testbench for every benchmark all in one given the token limits and how it struggled to make some of the standalone testbenches.
 
-The complete transcripts of the ChatGPT conversations can be found at https://github.com/JBlocklove/tt03-chatgpt-4_benchmarks/tree/main/conversations
+The complete transcripts of the ChatGPT conversations can be found at https://github.com/JBlocklove/tt03-qtchallenges/tree/main/conversations
 
 ---
 
@@ -176,8 +176,7 @@ I am trying to create a Verilog model for a sequence generator. It must meet the
 	- Outputs:
 		- Data (8 bits)
 
-While enabled, it should generate an output sequence of the following hexadecimal values and
-then repeat:
+While enabled, it should generate an output sequence of the following hexadecimal values and then repeat:
 	- 0xAF
 	- 0xBC
 	- 0xE2

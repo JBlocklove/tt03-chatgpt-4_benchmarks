@@ -1,5 +1,5 @@
 module tb_sequence_generator;
-    reg clock;
+    reg clock = 0;
     reg reset_n;
     reg enable;
     wire [7:0] data;

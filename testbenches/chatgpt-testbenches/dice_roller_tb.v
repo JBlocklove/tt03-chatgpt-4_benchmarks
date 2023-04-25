@@ -88,4 +88,14 @@ module tb_dice_roller;
     $finish;
 end
 
+reg vcd_clk;
+initial begin
+	vcd_clk = 0;
+	$dumpfile("dice_roller.vcd");
+	$dumpvars(0, tb_dice_roller);
+	while (1) begin
+		#5 vcd_clk = ~vcd_clk;
+	end
+end
+
 endmodule
