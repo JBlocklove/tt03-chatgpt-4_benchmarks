@@ -47,8 +47,8 @@ documentation:
     #### ChatGPT Prompt
     ```
     I am trying to create a Verilog model for a wrapper around
-  several benchmarks, sepecifically for the Tiny Tapeout
-  project. It must meet the following specifications:
+    several benchmarks, sepecifically for the Tiny Tapeout
+    project. It must meet the following specifications:
         - Inputs:
             - io_in (8-bits)
         - Outputs:
@@ -161,7 +161,7 @@ documentation:
 
     ```
     I am trying to create a Verilog model for a shift register.
-  It must meet the following specifications:
+    It must meet the following specifications:
     	- Inputs:
     		- Clock
     		- Active-low reset
@@ -201,7 +201,7 @@ documentation:
     #### ChatGPT Prompt
     ```
     I am trying to create a Verilog model for a sequence
-  generator. It must meet the following specifications:
+    generator. It must meet the following specifications:
     	- Inputs:
     		- Clock
     		- Active-low reset
@@ -210,7 +210,7 @@ documentation:
     		- Data (8 bits)
 
     While enabled, it should generate an output sequence of the
-  following hexadecimal values and then repeat:
+    following hexadecimal values and then repeat:
     	- 0xAF
     	- 0xBC
     	- 0xE2
@@ -262,7 +262,7 @@ documentation:
     #### ChatGPT Prompt
     ```
     I am trying to create a Verilog model for a sequence
-  detector. It must meet the following specifications:
+    detector. It must meet the following specifications:
     	- Inputs:
     		- Clock
     		- Active-low reset
@@ -271,7 +271,7 @@ documentation:
     		- Sequence found
 
     While enabled, it should detect the following sequence of
-  binary input values:
+    binary input values:
     	- 0b001
     	- 0b101
     	- 0b110
@@ -323,7 +323,7 @@ documentation:
     #### ChatGPT Prompt
     ```
     I am trying to create a Verilog model for an ABRO state
-  machine. It must meet the following specifications:
+    machine. It must meet the following specifications:
         - Inputs:
             - Clock
             - Active-low reset
@@ -370,8 +370,8 @@ documentation:
     #### ChatGPT Prompt
     ```
     I am trying to create a Verilog model for a binary to
-  binary-coded-decimal converter. It must meet the following
-  specifications:
+    binary-coded-decimal converter. It must meet the following
+    specifications:
     	- Inputs:
     		- Binary input (5-bits)
     	- Outputs:
@@ -408,7 +408,7 @@ documentation:
     #### ChatGPT Prompt
     ```
     I am trying to create a Verilog model for an LFSR. It must
-  meet the following specifications:
+    meet the following specifications:
     	- Inputs:
     		- Clock
             - Active-low reset
@@ -451,7 +451,7 @@ documentation:
     #### ChatGPT Prompt
     ```
     I am trying to create a Verilog model for a traffic light
-  state machine. It must meet the following specifications:
+    state machine. It must meet the following specifications:
         - Inputs:
             - Clock
             - Active-low reset
@@ -497,7 +497,7 @@ documentation:
     #### ChatGPT Prompt
     ```
     I am trying to create a Verilog model for a simulated dice
-  roller. It must meet the following specifications:
+    roller. It must meet the following specifications:
         - Inputs:
             - Clock
             - Active-low reset
