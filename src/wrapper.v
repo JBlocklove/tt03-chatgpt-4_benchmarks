@@ -1,4 +1,4 @@
-module jblocklove_cgpt_benchmark_wrapper (
+module tt_um_jblocklove_cgpt_benchmark_wrapper (
     input wire [7:0] io_in,
     output reg [7:0] io_out
 );

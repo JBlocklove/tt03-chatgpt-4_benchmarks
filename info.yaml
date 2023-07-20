@@ -15,7 +15,7 @@ project:
     - sequence_generator.v
     - shift_register.v
     - traffic_light.v
-  top_module:  "jblocklove_cgpt_benchmark_wrapper"      # put the name of your top module here, make it unique by prepending your github username
+  top_module:  "tt_um_jblocklove_cgpt_benchmark_wrapper"      # put the name of your top module here, make it unique by prepending your github username
 
 # Keep a track of the submission yaml
 yaml_version: 3.0
