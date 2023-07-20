@@ -26,8 +26,8 @@ jobs:
     - name: checkout tt tools repo
       uses: actions/checkout@v3
       with:
-        repository: tinytapeout/tt-support-tools
-        path: tt03
+        repository: tinytapeout/tt-support-tools@tt03
+        path: tt
         
     # need python
     - name: setup python
