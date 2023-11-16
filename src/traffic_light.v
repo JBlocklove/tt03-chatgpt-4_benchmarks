@@ -1,76 +1,49 @@
-module traffic_light_fsm (
-    input wire clk,
-    input wire reset_n,
-    input wire enable,
-    output reg red,
-    output reg yellow,
-    output reg green
+module traffic_light (
+    input wire Clock,
+    input wire Reset_n,
+    input wire Enable,
+    output reg Red,
+    output reg Yellow,
+    output reg Green
 );
 
 // Define state encoding
-localparam [1:0] RED = 2'b00;
-localparam [1:0] GREEN = 2'b01;
-localparam [1:0] YELLOW = 2'b10;
+localparam RED = 2'b00, GREEN = 2'b01, YELLOW = 2'b10;
 
-reg [1:0] current_state, next_state;
+reg [1:0] state, next_state;
+reg [5:0] counter;
 
-// Clock divider
-reg [6:0] clk_divider;
-
-always @(posedge clk or negedge reset_n) begin
-    if (!reset_n) begin
-        clk_divider <= 7'd0;
-        current_state <= RED;
-    end else if (enable) begin
-        // State transition on every 32, 20, or 7 clock cycles depending on the current state
-        case (current_state)
-            RED: begin
-                if (clk_divider == 32 - 1) begin
-                    clk_divider <= 7'd0;
-                    current_state <= GREEN;
-                end else begin
-                    clk_divider <= clk_divider + 1;
-                end
-            end
-            GREEN: begin
-                if (clk_divider == 20 - 1) begin
-                    clk_divider <= 7'd0;
-                    current_state <= YELLOW;
-                end else begin
-                    clk_divider <= clk_divider + 1;
-                end
-            end
-            YELLOW: begin
-                if (clk_divider == 7 - 1) begin
-                    clk_divider <= 7'd0;
-                    current_state <= RED;
-                end else begin
-                    clk_divider <= clk_divider + 1;
-                end
-            end
-            default: begin
-                clk_divider <= 7'd0;
-                current_state <= RED;
-            end
+// State transition
+always @(posedge Clock or negedge Reset_n) begin
+    if (~Reset_n) begin
+        state <= RED;
+        counter <= 6'd0;
+    end else if (Enable) begin
+        state <= next_state;
+        case (state)
+            RED:    counter <= (counter == 6'd31) ? 6'd0 : counter + 6'd1;
+            GREEN:  counter <= (counter == 6'd19) ? 6'd0 : counter + 6'd1;
+            YELLOW: counter <= (counter == 6'd6)  ? 6'd0 : counter + 6'd1;
+            default: counter <= 6'd0;
         endcase
     end
 end
 
 // Next state logic
 always @(*) begin
-    case (current_state)
-        RED: next_state = GREEN;
-        GREEN: next_state = YELLOW;
-        YELLOW: next_state = RED;
-        default: next_state = RED;
+    next_state = state;
+    case (state)
+        RED:    if (counter == 6'd31) next_state = GREEN;
+        GREEN:  if (counter == 6'd19) next_state = YELLOW;
+        YELLOW: if (counter == 6'd6)  next_state = RED;
     endcase
 end
 
 // Output logic
 always @(*) begin
-    red = (current_state == RED) ? 1'b1 : 1'b0;
-    yellow = (current_state == YELLOW) ? 1'b1 : 1'b0;
-    green = (current_state == GREEN) ? 1'b1 : 1'b0;
+    Red = (state == RED);
+    Yellow = (state == YELLOW);
+    Green = (state == GREEN);
 end
 
 endmodule

@@ -40,33 +40,34 @@ module tt_um_jblocklove_cgpt_benchmark_wrapper (
         .sequence_found(sequence_found)
     );
 
-    abro_state_machine abro_sm (
+    abro_fsm abro_sm (
         .clk(clk),
-        .rst_n(reset_n),
+        .reset_n(reset_n),
         .A(io_in[2]),
         .B(io_in[3]),
         .O(O),
         .State(state)
     );
 
-    binary_to_bcd_converter b2b (
+    binary_to_bcd b2b (
         .binary_input(binary_input),
-		.bcd_output({bcd_tens, bcd_units})
+		.tens(bcd_tens),
+		.ones (bcd_units)
     );
 
-    lfsr lfsr_inst (
+    lfsr_8bit lfsr_inst (
         .clk(clk),
         .reset_n(reset_n),
         .data(lfsr_out)
     );
 
-    traffic_light_fsm traffic_inst (
-        .clk(clk),
+    traffic_light traffic_inst (
+        .Clock(clk),
         .reset_n(reset_n),
-        .enable(io_in[3]),
-        .red(red),
-        .yellow(yellow),
-        .green(green)
+        .Enable(io_in[3]),
+        .Red(red),
+        .Yellow(yellow),
+        .Green(green)
     );
 
     dice_roller dice_inst (

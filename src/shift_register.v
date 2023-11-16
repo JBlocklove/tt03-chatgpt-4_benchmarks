@@ -7,11 +7,11 @@ module shift_register (
 );
 
 always @(posedge clk or negedge reset_n) begin
-    if (~reset_n) begin
+    if (!reset_n) begin
         // Active-low reset
         data_out <= 8'b0;
     end else if (shift_enable) begin
-        // Shift data if shift_enable is asserted
+        // Shift operation
         data_out <= {data_out[6:0], data_in};
     end
 end
