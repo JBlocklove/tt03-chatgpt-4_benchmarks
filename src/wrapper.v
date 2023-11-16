@@ -21,58 +21,57 @@ module tt_um_jblocklove_cgpt_benchmark_wrapper (
     shift_register shift_reg (
         .clk(clk),
         .reset_n(reset_n),
-        .data_in(io_in[2]),
+        .data(io_in[2]),
         .shift_enable(io_in[3]),
-        .data_out(shift_register_out)
+        .q(shift_register_out)
     );
 
     sequence_generator seq_gen (
         .clk(clk),
-        .reset_n(reset_n),
-        .enable(io_in[4]),
+        .rst_n(reset_n),
+        .en(io_in[4]),
         .data(sequence_generator_out)
     );
 
     sequence_detector seq_det (
         .clk(clk),
-        .reset_n(reset_n),
+        .rst_n(reset_n),
         .data(sequence_detector_data),
-        .sequence_found(sequence_found)
+        .seq_found(sequence_found)
     );
 
-    abro_fsm abro_sm (
+    Abro_StateMachine abro_sm (
         .clk(clk),
-        .reset_n(reset_n),
+        .resetn(reset_n),
         .A(io_in[2]),
         .B(io_in[3]),
         .O(O),
-        .State(state)
+        .state(state)
     );
 
-    binary_to_bcd b2b (
-        .binary_input(binary_input),
-		.tens(bcd_tens),
-		.ones (bcd_units)
-    );
+    bin2bcd b2b (
+        .bin_in(binary_input),
+		.bcd_out({bcd_tens, bcd_units})
+	);
 
-    lfsr_8bit lfsr_inst (
+    lfsr lfsr_inst (
         .clk(clk),
-        .reset_n(reset_n),
+        .rst_n(reset_n),
         .data(lfsr_out)
     );
 
     traffic_light traffic_inst (
-        .Clock(clk),
-        .Reset_n(reset_n),
-        .Enable(io_in[3]),
-        .Red(red),
-        .Yellow(yellow),
-        .Green(green)
+        .clk(clk),
+        .reset_n(reset_n),
+        .enable(io_in[3]),
+        .red(red),
+        .yellow(yellow),
+        .green(green)
     );
 
     dice_roller dice_inst (
         .clk(clk),
-        .rst_n(reset_n),
+        .reset_n(reset_n),
         .die_select({io_in[2], io_in[3]}),
         .roll(io_in[4]),
         .rolled_number(dice_roller_out)

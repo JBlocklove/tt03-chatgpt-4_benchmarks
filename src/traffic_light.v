@@ -1,50 +1,80 @@
 module traffic_light (
-    input wire Clock,
-    input wire Reset_n,
-    input wire Enable,
-    output reg Red,
-    output reg Yellow,
-    output reg Green
+    input wire clk,
+    input wire reset_n,
+    input wire enable,
+    output reg red,
+    output reg yellow,
+    output reg green
 );
 
-// Define state encoding
-localparam RED = 2'b00, GREEN = 2'b01, YELLOW = 2'b10;
+    // Define states
+    localparam IDLE = 2'b00;
+    localparam RED_STATE = 2'b01;
+    localparam GREEN_STATE = 2'b10;
+    localparam YELLOW_STATE = 2'b11;
 
-reg [1:0] state, next_state;
-reg [5:0] counter;
+    // Define state register
+    reg [1:0] state;
 
-// State transition
-always @(posedge Clock or negedge Reset_n) begin
-    if (~Reset_n) begin
-        state <= RED;
-        counter <= 6'd0;
-    end else if (Enable) begin
-        state <= next_state;
-        case (state)
-            RED:    counter <= (counter == 6'd31) ? 6'd0 : counter + 6'd1;
-            GREEN:  counter <= (counter == 6'd19) ? 6'd0 : counter + 6'd1;
-            YELLOW: counter <= (counter == 6'd6)  ? 6'd0 : counter + 6'd1;
-            default: counter <= 6'd0;
-        endcase
+    // Define counter for state transitions
+    reg [5:0] counter;
+
+    // State transition logic
+    always @(posedge clk or negedge reset_n)
+    begin
+        if (~reset_n)
+        begin
+            state <= IDLE;
+            counter <= 0;
+        end
+        else if (enable)
+        begin
+            case (state)
+                IDLE:
+                    if (counter == 0)
+                    begin
+                        state <= RED_STATE;
+                        counter <= 31;
+                    end
+                    else
+                        counter <= counter - 1;
+                RED_STATE:
+                    if (counter == 0)
+                    begin
+                        state <= GREEN_STATE;
+                        counter <= 19;
+                    end
+                    else
+                        counter <= counter - 1;
+                GREEN_STATE:
+                    if (counter == 0)
+                    begin
+                        state <= YELLOW_STATE;
+                        counter <= 6;
+                    end
+                    else
+                        counter <= counter - 1;
+                YELLOW_STATE:
+                    if (counter == 0)
+                    begin
+                        state <= RED_STATE;
+                        counter <= 31;
+                    end
+                    else
+                        counter <= counter - 1;
+            endcase
+        end
+        else
+            counter <= 0;
     end
-end
 
-// Next state logic
-always @(*) begin
-    next_state = state;
-    case (state)
-        RED:    if (counter == 6'd31) next_state = GREEN;
-        GREEN:  if (counter == 6'd19) next_state = YELLOW;
-        YELLOW: if (counter == 6'd6)  next_state = RED;
-    endcase
-end
-
-// Output logic
-always @(*) begin
-    Red = (state == RED);
-    Yellow = (state == YELLOW);
-    Green = (state == GREEN);
-end
+    // Output logic
+    always @(state)
+    begin
+        red = (state == RED_STATE);
+        yellow = (state == YELLOW_STATE);
+        green = (state == GREEN_STATE);
+    end
 
 endmodule
 
