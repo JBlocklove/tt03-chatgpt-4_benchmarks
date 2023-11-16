@@ -27,7 +27,7 @@ module tt_um_jblocklove_cgpt_benchmark_wrapper (
     );
 
     sequence_generator seq_gen (
-        .clock(clk),
+        .clk(clk),
         .reset_n(reset_n),
         .enable(io_in[4]),
         .data(sequence_generator_out)
@@ -42,17 +42,16 @@ module tt_um_jblocklove_cgpt_benchmark_wrapper (
 
     abro_state_machine abro_sm (
         .clk(clk),
-        .reset_n(reset_n),
+        .rst_n(reset_n),
         .A(io_in[2]),
         .B(io_in[3]),
         .O(O),
-        .state(state)
+        .State(state)
     );
 
     binary_to_bcd b2b (
         .binary_input(binary_input),
-        .bcd_tens(bcd_tens),
-        .bcd_units(bcd_units)
+		.binary_output({bcd_tens, bcd_units})
     );
 
     lfsr lfsr_inst (
@@ -72,7 +71,7 @@ module tt_um_jblocklove_cgpt_benchmark_wrapper (
 
     dice_roller dice_inst (
         .clk(clk),
-        .reset_n(reset_n),
+        .rst_n(reset_n),
         .die_select({io_in[2], io_in[3]}),
         .roll(io_in[4]),
         .rolled_number(dice_roller_out)

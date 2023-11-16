@@ -7,11 +7,14 @@ module shift_register (
 );
 
 always @(posedge clk or negedge reset_n) begin
-    if (!reset_n) begin
-        data_out <= 8'b0; // Active-low reset: Clear the register when reset_n is low
+    if (~reset_n) begin
+        // Active-low reset
+        data_out <= 8'b0;
     end else if (shift_enable) begin
-        data_out <= {data_out[6:0], data_in}; // Shift the register and insert the new data bit
+        // Shift data if shift_enable is asserted
+        data_out <= {data_out[6:0], data_in};
     end
 end
 
 endmodule
+
