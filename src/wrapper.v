@@ -63,7 +63,7 @@ module tt_um_jblocklove_cgpt_benchmark_wrapper (
 
     traffic_light traffic_inst (
         .Clock(clk),
-        .reset_n(reset_n),
+        .Reset_n(reset_n),
         .Enable(io_in[3]),
         .Red(red),
         .Yellow(yellow),
