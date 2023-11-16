@@ -1,99 +1,93 @@
 module SequenceDetector(
   input wire clk,
-  input wire reset_n,
+  input wire rst_n,
   input wire [2:0] data,
   output reg sequence_found
 );
 
-  // Define states using parameters
-  parameter S_IDLE = 4'b0000;
-  parameter S_001 = 4'b0001;
-  parameter S_101 = 4'b0010;
-  parameter S_110 = 4'b0011;
-  parameter S_000 = 4'b0100;
-  parameter S_110_1 = 4'b0101;
-  parameter S_110_2 = 4'b0110;
-  parameter S_011 = 4'b0111;
-  parameter S_101_1 = 4'b1000;
+  reg [2:0] state;
+  reg [2:0] next_state;
+  reg [2:0] prev_data;
 
-  // Define internal signals
-  reg [3:0] current_state;
-  reg [3:0] next_state;
+  // Define the sequence pattern
+  localparam [7:0] SEQUENCE_PATTERN = 8'b0011011000110101;
 
-  // Sequential logic for state transition
-  always @(posedge clk or negedge reset_n) begin
-    if (!reset_n)
-      current_state <= S_IDLE;
-    else
-      current_state <= next_state;
+  always @(posedge clk or negedge rst_n) begin
+    if (~rst_n) begin
+      // Reset the state and other variables
+      state <= 3'b000;
+      prev_data <= 3'b000;
+      sequence_found <= 1'b0;
+    end else begin
+      // State transitions
+      state <= next_state;
+      prev_data <= data;
+
+      case (state)
+        3'b000: begin // Initial state
+          if (data == 3'b001)
+            next_state = 3'b001;
+          else
+            next_state = 3'b000;
+        end
+
+        3'b001: begin
+          if (data == 3'b101)
+            next_state = 3'b010;
+          else
+            next_state = 3'b000;
+        end
+
+        3'b010: begin
+          if (data == 3'b110)
+            next_state = 3'b011;
+          else
+            next_state = 3'b000;
+        end
+
+        3'b011: begin
+          if (data == 3'b000)
+            next_state = 3'b100;
+          else
+            next_state = 3'b000;
+        end
+
+        3'b100: begin
+          if (data == 3'b110)
+            next_state = 3'b101;
+          else
+            next_state = 3'b000;
+        end
+
+        3'b101: begin
+          if (data == 3'b110)
+            next_state = 3'b110;
+          else
+            next_state = 3'b000;
+        end
+
+        3'b110: begin
+          if (data == 3'b011)
+            next_state = 3'b111;
+          else
+            next_state = 3'b000;
+        end
+
+        3'b111: begin
+          if (data == 3'b101)
+            next_state = 3'b000;
+          else
+            next_state = 3'b000;
+        end
+      endcase
+    end
   end
 
-  // Combinational logic for next state and sequence detection
-  always @(*) begin
-    next_state = current_state;
-    sequence_found = 0;
-
-    case (current_state)
-      S_IDLE: begin
-        if (data == 3'b001)
-          next_state = S_001;
-      end
-
-      S_001: begin
-        if (data == 3'b101)
-          next_state = S_101;
-        else
-          next_state = S_IDLE;
-      end
-
-      S_101: begin
-        if (data == 3'b110)
-          next_state = S_110;
-        else
-          next_state = S_IDLE;
-      end
-
-      S_110: begin
-        if (data == 3'b000)
-          next_state = S_000;
-        else
-          next_state = S_IDLE;
-      end
-
-      S_000: begin
-        if (data == 3'b110)
-          next_state = S_110_1;
-        else
-          next_state = S_IDLE;
-      end
-
-      S_110_1: begin
-        if (data == 3'b110)
-          next_state = S_110_2;
-        else
-          next_state = S_IDLE;
-      end
-
-      S_110_2: begin
-        if (data == 3'b011) begin
-          next_state = S_011;
-          sequence_found = 1;
-        end
-        else
-          next_state = S_IDLE;
-      end
-
-      S_011: begin
-        if (data == 3'b101)
-          next_state = S_101_1;
-        else
-          next_state = S_IDLE;
-      end
-
-      S_101_1: begin
-        next_state = S_IDLE;
-      end
-    endcase
+  always @(posedge clk or negedge rst_n) begin
+    if (~rst_n)
+      sequence_found <= 1'b0;
+    else if (state == 3'b111 && prev_data == SEQUENCE_PATTERN[7:5])
+      sequence_found <= 1'b1;
   end
 
 endmodule

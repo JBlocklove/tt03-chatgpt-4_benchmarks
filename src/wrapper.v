@@ -19,8 +19,8 @@ module tt_um_jblocklove_cgpt_benchmark_wrapper (
 
     // Instantiate modules
     ShiftRegister shift_reg (
-        .clk(clk),
-        .reset(reset_n),
+        .clock(clk),
+        .reset_n(reset_n),
         .data(io_in[2]),
         .shift_enable(io_in[3]),
         .output_data(shift_register_out)
@@ -35,14 +35,14 @@ module tt_um_jblocklove_cgpt_benchmark_wrapper (
 
     SequenceDetector seq_det (
         .clk(clk),
-        .reset_n(reset_n),
+        .rst_n(reset_n),
         .data(sequence_detector_data),
         .sequence_found(sequence_found)
     );
 
     ABRO_StateMachine abro_sm (
-        .clock(clk),
-        .reset(reset_n),
+        .clk(clk),
+        .reset_n(reset_n),
         .A(io_in[2]),
         .B(io_in[3]),
         .O(O),
@@ -54,9 +54,9 @@ module tt_um_jblocklove_cgpt_benchmark_wrapper (
 		.bcd_output({bcd_tens, bcd_units})
 	);
 
-    LFSR lfsr_inst (
+    lfsr lfsr_inst (
         .clk(clk),
-        .reset_n(reset_n),
+        .reset(reset_n),
         .data(lfsr_out)
     );
 
@@ -71,7 +71,7 @@ module tt_um_jblocklove_cgpt_benchmark_wrapper (
 
     DiceRoller dice_inst (
         .clk(clk),
-        .reset(reset_n),
+        .reset_n(reset_n),
         .die_select({io_in[2], io_in[3]}),
         .roll(io_in[4]),
         .rolled_number(dice_roller_out)

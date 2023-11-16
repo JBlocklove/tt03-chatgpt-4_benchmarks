@@ -1,21 +1,21 @@
-module LFSR (
+module lfsr(
   input wire clk,
-  input wire reset_n,
+  input wire reset,
   output wire [7:0] data
 );
 
   reg [7:0] state;
-  wire feedback;
+  reg feedback;
 
-  always @(posedge clk or negedge reset_n) begin
-    if (~reset_n) begin
-      state <= 8'b10001010;
+  always @(posedge clk or negedge reset) begin
+    if (!reset) begin
+      state <= 8'b10001010; // Initial state
     end else begin
-      state <= {state[6:0], feedback};
+      feedback <= state[1] ^ state[4] ^ state[6] ^ state[7]; // Feedback calculation
+      state <= {state[6:0], feedback}; // Shift register
     end
   end
 
-  assign feedback = state[1] ^ state[4] ^ state[6] ^ state[7];
   assign data = state;
 
 endmodule
