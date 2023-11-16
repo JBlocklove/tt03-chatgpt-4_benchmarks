@@ -1,43 +1,72 @@
-module SequenceGenerator (
-    input wire clk,
-    input wire reset_n,
+module sequence_generator (
+    input wire clock,
+    input wire reset_n, // active-low reset
     input wire enable,
-    output reg [7:0] data
+    output reg [7:0] data // 8-bit output
 );
 
-    reg [2:0] counter;
-    reg [7:0] sequence [0:7];
-    reg reset_sync;
+// Define states as parameters
+parameter S_AF = 3'b000,
+          S_BC = 3'b001,
+          S_E2 = 3'b010,
+          S_78 = 3'b011,
+          S_FF = 3'b100,
+          S_E2_REPEAT = 3'b101,
+          S_0B = 3'b110,
+          S_8D = 3'b111;
 
-    // Define the sequence
-    initial begin
-        sequence[0] = 8'b10101111;  // 0xAF
-        sequence[1] = 8'b10111100;  // 0xBC
-        sequence[2] = 8'b11100010;  // 0xE2
-        sequence[3] = 8'b01111000;  // 0x78
-        sequence[4] = 8'b11111111;  // 0xFF
-        sequence[5] = 8'b11100010;  // 0xE2
-        sequence[6] = 8'b00001011;  // 0x0B
-        sequence[7] = 8'b10001101;  // 0x8D
-    end
+// Declare FSM state registers
+reg [2:0] state, next_state;
 
-    always @(posedge clk) begin
-        if (reset_sync) begin
-            counter <= 0;
-            data <= 8'b0;
+// Combinational logic for next state and output
+always @(*) begin
+    case (state)
+        S_AF: begin
+            data = 8'hAF;
+            next_state = enable ? S_BC : state;
         end
-        else if (enable) begin
-            counter <= counter + 1;
-            data <= sequence[counter];
+        S_BC: begin
+            data = 8'hBC;
+            next_state = enable ? S_E2 : state;
         end
-    end
+        S_E2: begin
+            data = 8'hE2;
+            next_state = enable ? S_78 : state;
+        end
+        S_78: begin
+            data = 8'h78;
+            next_state = enable ? S_FF : state;
+        end
+        S_FF: begin
+            data = 8'hFF;
+            next_state = enable ? S_E2_REPEAT : state;
+        end
+        S_E2_REPEAT: begin
+            data = 8'hE2;
+            next_state = enable ? S_0B : state;
+        end
+        S_0B: begin
+            data = 8'h0B;
+            next_state = enable ? S_8D : state;
+        end
+        S_8D: begin
+            data = 8'h8D;
+            next_state = enable ? S_AF : state;
+        end
+        default: begin
+            data = 8'hAF;
+            next_state = S_AF;
+        end
+    endcase
+end
 
-    always @(posedge clk or negedge reset_n) begin
-        if (reset_n == 1'b0)
-            reset_sync <= 1'b1;
-        else if (reset_n == 1'b1)
-            reset_sync <= 1'b0;
+// Sequential logic for FSM state updates
+always @(posedge clock or negedge reset_n) begin
+    if (!reset_n) begin
+        state <= S_AF; // Reset to the initial state
+    end else begin
+        state <= next_state; // Update state on the rising edge of the clock
     end
+end
 
 endmodule
-

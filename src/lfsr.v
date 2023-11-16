@@ -1,22 +1,21 @@
-module lfsr(
-  input wire clk,
-  input wire reset,
-  output wire [7:0] data
+module lfsr (
+    input wire clk,
+    input wire reset_n, // Active-low reset
+    output reg [7:0] data
 );
 
-  reg [7:0] state;
-  reg feedback;
+// LFSR taps at locations 1, 4, 6, and 7
+wire feedback = data[0] ^ data[3] ^ data[5] ^ data[6];
 
-  always @(posedge clk or negedge reset) begin
-    if (!reset) begin
-      state <= 8'b10001010; // Initial state
+always @(posedge clk or negedge reset_n) begin
+    if (~reset_n) begin
+        // Active-low reset: Set initial state to 10001010
+        data <= 8'b10001010;
     end else begin
-      feedback <= state[1] ^ state[4] ^ state[6] ^ state[7]; // Feedback calculation
-      state <= {state[6:0], feedback}; // Shift register
+        // Shift data left, and apply the feedback to the LSB after shifting
+        data <= {data[6:0], feedback};
     end
-  end
-
-  assign data = state;
+end
 
 endmodule
 

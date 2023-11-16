@@ -1,24 +1,41 @@
-module BinaryToBCD(
-  input [4:0] binary_input,
-  output reg [7:0] bcd_output
+module binary_to_bcd (
+    input [4:0] binary_input,
+    output reg [3:0] bcd_tens,
+    output reg [3:0] bcd_units
 );
 
-  always @(*)
-  begin
-    case (binary_input)
-      5'b00000: bcd_output = 8'b0000_0000; // BCD output for 0
-      5'b00001: bcd_output = 8'b0000_0001; // BCD output for 1
-      5'b00010: bcd_output = 8'b0000_0010; // BCD output for 2
-      5'b00011: bcd_output = 8'b0000_0011; // BCD output for 3
-      5'b00100: bcd_output = 8'b0000_0100; // BCD output for 4
-      5'b00101: bcd_output = 8'b0000_0101; // BCD output for 5
-      5'b00110: bcd_output = 8'b0000_0110; // BCD output for 6
-      5'b00111: bcd_output = 8'b0000_0111; // BCD output for 7
-      5'b01000: bcd_output = 8'b0000_1000; // BCD output for 8
-      5'b01001: bcd_output = 8'b0000_1001; // BCD output for 9
-      default: bcd_output = 8'bxxxx_xxxx; // Invalid input
-    endcase
-  end
+integer i;
+integer bcd_value;
+integer binary_value;
+
+always @(*) begin
+    bcd_value = 0;
+    binary_value = binary_input;
+
+    // Double dabble algorithm to convert binary to BCD
+    for (i = 0; i < 5; i = i + 1) begin
+        // If the 4-bit BCD value is greater than or equal to 5, add 3
+        if (bcd_value[3:0] >= 5) begin
+            bcd_value = bcd_value + 3;
+        end
+
+        if (bcd_value[7:4] >= 5) begin
+            bcd_value = bcd_value + (3 << 4);
+        end
+
+        // Shift the BCD value one bit to the left
+        bcd_value = bcd_value << 1;
+
+        // Add the next binary bit from the binary input
+        bcd_value[0] = binary_value[4];
+
+        // Shift the binary input one bit to the left
+        binary_value = binary_value << 1;
+    end
+
+    bcd_tens = bcd_value[7:4];
+    bcd_units = bcd_value[3:0];
+end
 
 endmodule
 
