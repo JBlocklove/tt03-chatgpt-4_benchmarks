@@ -49,7 +49,7 @@ module tt_um_jblocklove_cgpt_benchmark_wrapper (
         .State(state)
     );
 
-    binary_to_bcd b2b (
+    binary_to_bcd_converter b2b (
         .binary_input(binary_input),
 		.binary_output({bcd_tens, bcd_units})
     );
@@ -60,7 +60,7 @@ module tt_um_jblocklove_cgpt_benchmark_wrapper (
         .data(lfsr_out)
     );
 
-    traffic_light traffic_inst (
+    traffic_light_fsm traffic_inst (
         .clk(clk),
         .reset_n(reset_n),
         .enable(io_in[3]),
