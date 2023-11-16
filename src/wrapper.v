@@ -51,7 +51,7 @@ module tt_um_jblocklove_cgpt_benchmark_wrapper (
 
     binary_to_bcd_converter b2b (
         .binary_input(binary_input),
-		.binary_output({bcd_tens, bcd_units})
+		.bcd_output({bcd_tens, bcd_units})
     );
 
     lfsr lfsr_inst (
