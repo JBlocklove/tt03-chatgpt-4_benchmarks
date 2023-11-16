@@ -1,45 +1,35 @@
 module ABRO_StateMachine (
-  input clk,
-  input resetn,
-  input A,
-  input B,
+  input wire clock,
+  input wire reset,
+  input wire A,
+  input wire B,
   output reg O,
-  output reg [3:0] state
+  output reg [3:0] State
 );
-  // Internal signals
-  reg [3:0] next_state;
+  reg [3:0] next_State;
 
-  // State machine definition
-  always @(posedge clk or negedge resetn)
-  begin
-    if (!resetn)
-      state <= 4'b0000;
-    else
-      state <= next_state;
+  always @(posedge clock) begin
+    if (reset) begin
+      next_State <= 4'b0001;
+      O <= 0;
+    end
+    else begin
+      case (State)
+        4'b0001:
+          if (A) next_State <= 4'b0010;
+        4'b0010:
+          if (!A) next_State <= 4'b0100;
+        4'b0100:
+          if (B) next_State <= 4'b1000;
+        4'b1000:
+          if (!B) next_State <= 4'b0001;
+      endcase
+    end
   end
 
-  // Next state logic
-  always @(*)
-  begin
-    case (state)
-      4'b0000: next_state = A ? 4'b0001 : 4'b0000;
-      4'b0001: next_state = B ? 4'b0010 : 4'b0011;
-      4'b0010: next_state = A ? 4'b0001 : 4'b0010;
-      4'b0011: next_state = B ? 4'b0100 : 4'b0011;
-      4'b0100: next_state = A ? 4'b0101 : 4'b0100;
-      4'b0101: next_state = B ? 4'b0110 : 4'b0101;
-      4'b0110: next_state = A ? 4'b0001 : 4'b0110;
-      default: next_state = 4'b0000;
-    endcase
-  end
-
-  // Output logic
-  always @(posedge clk)
-  begin
-    case (next_state)
-      4'b0001: O <= 1'b0;
-      default: O <= 1'b1;
-    endcase
+  always @(posedge clock) begin
+    State <= next_State;
+    O <= (State == 4'b0010 || State == 4'b1000);
   end
 endmodule
 

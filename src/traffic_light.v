@@ -1,80 +1,90 @@
-module traffic_light (
-    input wire clk,
-    input wire reset_n,
-    input wire enable,
-    output reg red,
-    output reg yellow,
-    output reg green
+module TrafficLight (
+  input wire clk,
+  input wire reset_n,
+  input wire enable,
+  output reg red,
+  output reg yellow,
+  output reg green
 );
 
-    // Define states
-    localparam IDLE = 2'b00;
-    localparam RED_STATE = 2'b01;
-    localparam GREEN_STATE = 2'b10;
-    localparam YELLOW_STATE = 2'b11;
+  // State definition
+  localparam S_RED = 3'b001;
+  localparam S_GREEN = 3'b010;
+  localparam S_YELLOW = 3'b100;
 
-    // Define state register
-    reg [1:0] state;
+  reg [2:0] state, next_state;
+  reg [4:0] counter;
 
-    // Define counter for state transitions
-    reg [5:0] counter;
+  // State register
+  always @(posedge clk or negedge reset_n) begin
+    if (~reset_n)
+      state <= S_RED;
+    else
+      state <= next_state;
+  end
 
-    // State transition logic
-    always @(posedge clk or negedge reset_n)
-    begin
-        if (~reset_n)
-        begin
-            state <= IDLE;
-            counter <= 0;
-        end
-        else if (enable)
-        begin
-            case (state)
-                IDLE:
-                    if (counter == 0)
-                    begin
-                        state <= RED_STATE;
-                        counter <= 31;
-                    end
-                    else
-                        counter <= counter - 1;
-                RED_STATE:
-                    if (counter == 0)
-                    begin
-                        state <= GREEN_STATE;
-                        counter <= 19;
-                    end
-                    else
-                        counter <= counter - 1;
-                GREEN_STATE:
-                    if (counter == 0)
-                    begin
-                        state <= YELLOW_STATE;
-                        counter <= 6;
-                    end
-                    else
-                        counter <= counter - 1;
-                YELLOW_STATE:
-                    if (counter == 0)
-                    begin
-                        state <= RED_STATE;
-                        counter <= 31;
-                    end
-                    else
-                        counter <= counter - 1;
-            endcase
-        end
+  // Next-state logic
+  always @(state, counter, enable) begin
+    case (state)
+      S_RED:
+        if (enable && (counter == 5))
+          next_state = S_GREEN;
         else
-            counter <= 0;
-    end
+          next_state = S_RED;
+      S_GREEN:
+        if (enable && (counter == 31))
+          next_state = S_YELLOW;
+        else
+          next_state = S_GREEN;
+      S_YELLOW:
+        if (enable && (counter == 7))
+          next_state = S_RED;
+        else
+          next_state = S_YELLOW;
+      default:
+        next_state = S_RED;
+    endcase
+  end
 
-    // Output logic
-    always @(state)
-    begin
-        red = (state == RED_STATE);
-        yellow = (state == YELLOW_STATE);
-        green = (state == GREEN_STATE);
+  // Counter and output logic
+  always @(posedge clk or negedge reset_n) begin
+    if (~reset_n) begin
+      counter <= 0;
+      red <= 1'b1;
+      yellow <= 1'b0;
+      green <= 1'b0;
     end
+    else if (state != next_state) begin
+      counter <= counter + 1;
+      red <= red;
+      yellow <= yellow;
+      green <= green;
+    end
+    else if (enable && (counter == 5) && (state == S_RED)) begin
+      counter <= 0;
+      red <= 1'b0;
+      yellow <= 1'b0;
+      green <= 1'b1;
+    end
+    else if (enable && (counter == 31) && (state == S_GREEN)) begin
+      counter <= 0;
+      red <= 1'b0;
+      yellow <= 1'b1;
+      green <= 1'b0;
+    end
+    else if (enable && (counter == 7) && (state == S_YELLOW)) begin
+      counter <= 0;
+      red <= 1'b1;
+      yellow <= 1'b0;
+      green <= 1'b0;
+    end
+    else begin
+      counter <= counter + 1;
+      red <= red;
+      yellow <= yellow;
+      green <= green;
+    end
+  end
 
 endmodule
 

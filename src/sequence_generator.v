@@ -1,75 +1,59 @@
-module sequence_generator(
-    input clk,
-    input rst_n,
-    input en,
-    output reg [7:0] data
+module SequenceGenerator(
+  input wire clk,
+  input wire reset_n,
+  input wire enable,
+  output reg [7:0] data
 );
 
-    reg [2:0] state = 3'b000; // Initialize state to first state of sequence
-    reg [7:0] SEQ_VALUES [0:7] = '{8'hAF, 8'hBC, 8'hE2, 8'h78, 8'hFF, 8'hE2, 8'h0B, 8'h8D}; // Use concatenation operator to initialize SEQ_VALUES array
+  // Define states for the FSM
+  typedef enum logic [2:0] {
+    STATE_IDLE,
+    STATE_OUTPUT1,
+    STATE_OUTPUT2,
+    STATE_OUTPUT3,
+    STATE_OUTPUT4,
+    STATE_OUTPUT5,
+    STATE_OUTPUT6,
+    STATE_OUTPUT7,
+    STATE_OUTPUT8
+  } state_type;
 
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin
-            state <= 3'b000;
-            data <= 8'b0;
-        end
-        else begin
-            case (state)
-                3'b000: begin
-                    if (en) begin
-                        state <= 3'b001;
-                        data <= SEQ_VALUES[0];
-                    end
-                end
-                3'b001: begin
-                    if (en) begin
-                        state <= 3'b010;
-                        data <= SEQ_VALUES[1];
-                    end
-                end
-                3'b010: begin
-                    if (en) begin
-                        state <= 3'b011;
-                        data <= SEQ_VALUES[2];
-                    end
-                end
-                3'b011: begin
-                    if (en) begin
-                        state <= 3'b100;
-                        data <= SEQ_VALUES[3];
-                    end
-                end
-                3'b100: begin
-                    if (en) begin
-                        state <= 3'b101;
-                        data <= SEQ_VALUES[4];
-                    end
-                end
-                3'b101: begin
-                    if (en) begin
-                        state <= 3'b110;
-                        data <= SEQ_VALUES[5];
-                    end
-                end
-                3'b110: begin
-                    if (en) begin
-                        state <= 3'b111;
-                        data <= SEQ_VALUES[6];
-                    end
-                end
-                3'b111: begin
-                    if (en) begin
-                        state <= 3'b000;
-                        data <= SEQ_VALUES[7];
-                    end
-                end
-                default: begin
-                    state <= 3'b000;
-                    data <= 8'b0;
-                end
-            endcase
-        end
+  // Define current state and next state variables
+  reg [2:0] current_state, next_state;
+
+  // Define sequence values
+  reg [7:0] sequence [8:1] = '{8'hAF, 8'hBC, 8'hE2, 8'h78, 8'hFF, 8'hE2, 8'h0B, 8'h8D};
+
+  always @(posedge clk or negedge reset_n) begin
+    if (~reset_n) begin
+      // Reset to initial state and output the first value
+      current_state <= STATE_OUTPUT1;
+      data <= sequence[1];
     end
+    else if (enable) begin
+      // Update the state and output the corresponding sequence value
+      current_state <= next_state;
+      data <= sequence[current_state];
+    end
+  end
+
+  // Define the next state logic
+  always @(current_state or enable) begin
+    case (current_state)
+      STATE_IDLE:
+        if (enable) next_state <= STATE_OUTPUT1;
+        else next_state <= STATE_IDLE;
+      STATE_OUTPUT1: next_state <= STATE_OUTPUT2;
+      STATE_OUTPUT2: next_state <= STATE_OUTPUT3;
+      STATE_OUTPUT3: next_state <= STATE_OUTPUT4;
+      STATE_OUTPUT4: next_state <= STATE_OUTPUT5;
+      STATE_OUTPUT5: next_state <= STATE_OUTPUT6;
+      STATE_OUTPUT6: next_state <= STATE_OUTPUT7;
+      STATE_OUTPUT7: next_state <= STATE_OUTPUT8;
+      STATE_OUTPUT8: next_state <= STATE_OUTPUT1;
+      default: next_state <= STATE_IDLE;
+    endcase
+  end
 
 endmodule
 

@@ -1,94 +1,100 @@
-module sequence_detector(
-    input clk,
-    input rst_n,
-    input [2:0] data,
-    output reg seq_found
+module SequenceDetector(
+  input wire clk,
+  input wire reset_n,
+  input wire [2:0] data,
+  output reg sequence_found
 );
 
-parameter IDLE = 3'b000;
-parameter S1 = 3'b001;
-parameter S2 = 3'b010;
-parameter S3 = 3'b011;
-parameter S4 = 3'b100;
-parameter S5 = 3'b101;
-parameter S6 = 3'b110;
-parameter S7 = 3'b111;
+  // Define states using parameters
+  parameter S_IDLE = 4'b0000;
+  parameter S_001 = 4'b0001;
+  parameter S_101 = 4'b0010;
+  parameter S_110 = 4'b0011;
+  parameter S_000 = 4'b0100;
+  parameter S_110_1 = 4'b0101;
+  parameter S_110_2 = 4'b0110;
+  parameter S_011 = 4'b0111;
+  parameter S_101_1 = 4'b1000;
 
-reg [2:0] state_reg;
-initial state_reg = IDLE;
-always @(posedge clk or negedge rst_n) begin
-    if (~rst_n) begin
-        state_reg <= IDLE;
-    end else begin
-        state_reg <= next_state;
-    end
-end
+  // Define internal signals
+  reg [3:0] current_state;
+  reg [3:0] next_state;
 
-reg [2:0] next_state;
-always @(*) begin
-    case (state_reg)
-        IDLE: begin
-            if (data == 3'b001) begin
-                next_state = S1;
-            end else begin
-                next_state = IDLE;
-            end
+  // Sequential logic for state transition
+  always @(posedge clk or negedge reset_n) begin
+    if (!reset_n)
+      current_state <= S_IDLE;
+    else
+      current_state <= next_state;
+  end
+
+  // Combinational logic for next state and sequence detection
+  always @(*) begin
+    next_state = current_state;
+    sequence_found = 0;
+
+    case (current_state)
+      S_IDLE: begin
+        if (data == 3'b001)
+          next_state = S_001;
+      end
+
+      S_001: begin
+        if (data == 3'b101)
+          next_state = S_101;
+        else
+          next_state = S_IDLE;
+      end
+
+      S_101: begin
+        if (data == 3'b110)
+          next_state = S_110;
+        else
+          next_state = S_IDLE;
+      end
+
+      S_110: begin
+        if (data == 3'b000)
+          next_state = S_000;
+        else
+          next_state = S_IDLE;
+      end
+
+      S_000: begin
+        if (data == 3'b110)
+          next_state = S_110_1;
+        else
+          next_state = S_IDLE;
+      end
+
+      S_110_1: begin
+        if (data == 3'b110)
+          next_state = S_110_2;
+        else
+          next_state = S_IDLE;
+      end
+
+      S_110_2: begin
+        if (data == 3'b011) begin
+          next_state = S_011;
+          sequence_found = 1;
         end
-        S1: begin
-            if (data == 3'b101) begin
-                next_state = S2;
-            end else begin
-                next_state = IDLE;
-            end
-        end
-        S2: begin
-            if (data == 3'b110) begin
-                next_state = S3;
-            end else begin
-                next_state = IDLE;
-            end
-        end
-        S3: begin
-            if (data == 3'b000) begin
-                next_state = S4;
-            end else begin
-                next_state = IDLE;
-            end
-        end
-        S4: begin
-            if (data == 3'b110) begin
-                next_state = S5;
-            end else begin
-                next_state = IDLE;
-            end
-        end
-        S5: begin
-            if (data == 3'b110) begin
-                next_state = S6;
-            end else begin
-                next_state = IDLE;
-            end
-        end
-        S6: begin
-            if (data == 3'b011) begin
-                next_state = S7;
-            end else begin
-                next_state = IDLE;
-            end
-        end
-        S7: begin
-            if (data == 3'b101) begin
-                next_state = IDLE;
-                seq_found = 1;
-            end else begin
-                next_state = IDLE;
-            end
-        end
-        default: begin
-            next_state = IDLE;
-        end
+        else
+          next_state = S_IDLE;
+      end
+
+      S_011: begin
+        if (data == 3'b101)
+          next_state = S_101_1;
+        else
+          next_state = S_IDLE;
+      end
+
+      S_101_1: begin
+        next_state = S_IDLE;
+      end
     endcase
-end
+  end
 
 endmodule
 
